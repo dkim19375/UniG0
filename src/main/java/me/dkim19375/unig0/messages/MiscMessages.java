@@ -10,11 +10,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class MiscMessages extends CommandHandler {
-    private final PropertiesFile file;
 
-    public MiscMessages(JDA jda) {
-        super(jda);
-        file = new PropertiesFile("options.properties");
+    public MiscMessages(JDA jda, PropertiesFile file) {
+        super(jda, file);
     }
 
     @Override
@@ -32,13 +30,13 @@ public class MiscMessages extends CommandHandler {
             case "prefix":
                 if (args.length == 0) {
                     EmbedManager embedManagerPrefix = new EmbedManager("UniG0 Prefix", null, Color.BLUE, cmd, null);
-                    embedManagerPrefix.getEmbedBuilder().addField("Current Prefix:", "`" + FileUtils.getPrefix(file) + "`\nYou can also use "
-                            + jda.getSelfUser().getAsMention() + " as the prefix!", true);
+                    embedManagerPrefix.getEmbedBuilder().addField("Current Prefix:", "`" + FileUtils.getPrefix(getPropertiesFile()) + "`\nYou can also use "
+                            + getJDA().getSelfUser().getAsMention() + " as the prefix!", true);
                     event.getChannel().sendMessage(embedManagerPrefix.getEmbedBuilder().build()).queue();
                     return;
                 }
-                FileUtils.setPrefix(file, args[0]);
-                event.getChannel().sendMessage("Successfully changed the prefix to `" + FileUtils.getPrefix(file) + "`!").queue();
+                FileUtils.setPrefix(getPropertiesFile(), args[0]);
+                event.getChannel().sendMessage("Successfully changed the prefix to `" + FileUtils.getPrefix(getPropertiesFile()) + "`!").queue();
                 return;
             case "config":
                 if (args.length == 0) {
@@ -55,7 +53,7 @@ public class MiscMessages extends CommandHandler {
                 switch (args[0].toLowerCase()) {
                     case "save":
                         event.getChannel().sendMessage("Saving the file...").queue();
-                        if (file.saveFile()) {
+                        if (getPropertiesFile().saveFile()) {
                             event.getChannel().sendMessage("File successfully saved!").queue();
                             return;
                         }
@@ -63,7 +61,7 @@ public class MiscMessages extends CommandHandler {
                         return;
                     case "load":
                         event.getChannel().sendMessage("Loading the file...").queue();
-                        if (file.loadFile()) {
+                        if (getPropertiesFile().loadFile()) {
                             event.getChannel().sendMessage("File successfully loaded!").queue();
                             return;
                         }
@@ -84,10 +82,10 @@ public class MiscMessages extends CommandHandler {
                             return;
                         }
                         event.getChannel().sendMessage("Putting the value `" + getRestArgs(args, 2) + "` for key `" + args[1] + "`...").queue();
-                        file.getProperties().put(args[1], getRestArgs(args, 2));
+                        getPropertiesFile().getProperties().put(args[1], getRestArgs(args, 2));
                         event.getChannel().sendMessage("Successfully put the value `" + getRestArgs(args, 2) + "` for key `" + args[1] + "`!").queue();
                         event.getChannel().sendMessage("Saving the file...").queue();
-                        if (file.saveFile()) {
+                        if (getPropertiesFile().saveFile()) {
                             event.getChannel().sendMessage("File successfully saved!").queue();
                             return;
                         }
@@ -108,7 +106,7 @@ public class MiscMessages extends CommandHandler {
                             event.getChannel().sendMessage("Could not get value! **Reason: not allowed to get `token`**").queue();
                             return;
                         }
-                        event.getChannel().sendMessage(file.getProperties().getProperty(args[1])).queue();
+                        event.getChannel().sendMessage(getPropertiesFile().getProperties().getProperty(args[1])).queue();
                         return;
                     default:
                         event.getChannel().sendMessage("Invalid argument!").queue();

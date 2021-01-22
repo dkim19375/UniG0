@@ -12,10 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommandHandler extends ListenerAdapter {
-    protected final JDA jda;
+    private final JDA jda;
+    private final PropertiesFile propertiesFile;
 
-    public CommandHandler(JDA jda) {
+    public CommandHandler(JDA jda, PropertiesFile propertiesFile) {
         this.jda = jda;
+        this.propertiesFile = propertiesFile;
     }
 
     @Nullable
@@ -24,7 +26,7 @@ public class CommandHandler extends ListenerAdapter {
         if (message.startsWith(jda.getSelfUser().getAsMention().replaceFirst("@", "@!"))) {
             prefix = jda.getSelfUser().getAsMention().replaceFirst("@", "@!");
         } else {
-            prefix = Options.PREFIX;
+            prefix = FileUtils.getPrefix(propertiesFile);
         }
         if (prefix == null) {
             return null;
@@ -78,4 +80,12 @@ public class CommandHandler extends ListenerAdapter {
     public void onGuildMessageReceived(String cmd, String[] args, String prefix, String all, GuildMessageReceivedEvent event) {  }
 
     public void onPrivateMessageReceived(String cmd, String[] args, String prefix, String all, PrivateMessageReceivedEvent event) {  }
+
+    public PropertiesFile getPropertiesFile() {
+        return propertiesFile;
+    }
+
+    public JDA getJDA() {
+        return jda;
+    }
 }

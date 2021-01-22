@@ -1,6 +1,7 @@
 package me.dkim19375.unig0;
 
 import me.dkim19375.unig0.messages.MiscMessages;
+import me.dkim19375.unig0.util.FileUtils;
 import me.dkim19375.unig0.util.PropertiesFile;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -15,6 +16,7 @@ public class UniG0 {
         JDABuilder builder = JDABuilder.createDefault(file.getProperties().getProperty("token", "TOKEN"));
         builder.setActivity(Activity.watching("dkim19375 code"));
         JDA jda = builder.build();
-        jda.addEventListener(new MiscMessages(jda));
+        jda.addEventListener(new MiscMessages(jda, file));
+        FileUtils.getPrefix(file);
     }
 }

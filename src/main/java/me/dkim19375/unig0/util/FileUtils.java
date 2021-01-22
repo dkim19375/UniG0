@@ -1,13 +1,24 @@
 package me.dkim19375.unig0.util;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Properties;
 
 public class FileUtils {
     public static String getPrefix(Properties properties) {
+        properties.putIfAbsent("prefix", "?");
+        try (OutputStream output = new FileOutputStream("options.properties")) {
+            properties.store(output, null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return properties.getProperty("prefix", "?");
     }
 
     public static String getPrefix(PropertiesFile properties) {
+        properties.getProperties().putIfAbsent("prefix", "?");
+        properties.saveFile();
         return properties.getProperties().getProperty("prefix", "?");
     }
 
