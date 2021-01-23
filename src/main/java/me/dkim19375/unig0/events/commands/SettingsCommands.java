@@ -13,7 +13,6 @@ import java.awt.*;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 public class SettingsCommands extends CommandHandler {
     public SettingsCommands(JDA jda) {
@@ -30,9 +29,10 @@ public class SettingsCommands extends CommandHandler {
         options.add("reload");
         options.add("delete-commands *|<command>");
         options.add("disable-channels <channel|id>");
+        options.add("reset");
 
         if (args.length < 1) {
-            EmbedManager embedManager = new EmbedManager("UniG0 Options", null, Color.BLUE, cmd, null);
+            EmbedManager embedManager = new EmbedManager("UniG0 Options", Color.BLUE, cmd, event.getAuthor());
             embedManager.getEmbedBuilder().addField(EmbedUtils.getEmbedGroup(new EntryImpl<>("Options", options)));
             event.getChannel().sendMessage(embedManager.getEmbedBuilder().build()).queue();
             return;
@@ -40,7 +40,7 @@ public class SettingsCommands extends CommandHandler {
         switch (args[0].toLowerCase()) {
             case "prefix":
                 if (args.length < 2) {
-                    EmbedManager embedManagerPrefix = new EmbedManager("UniG0 Prefix", null, Color.BLUE, cmd, null);
+                    EmbedManager embedManagerPrefix = new EmbedManager("UniG0 Prefix", Color.BLUE, cmd, event.getAuthor());
                     embedManagerPrefix.getEmbedBuilder().addField("Current Prefix:", "`" + FileUtils.getPrefix(event.getGuild().getId()) + "`\nYou can also use "
                             + getJDA().getSelfUser().getAsMention() + " as the prefix!", true);
                     event.getChannel().sendMessage(embedManagerPrefix.getEmbedBuilder().build()).queue();
@@ -55,7 +55,7 @@ public class SettingsCommands extends CommandHandler {
                 return;
             case "disable-channels":
                 if (args.length < 2) {
-                    EmbedManager embedManagerPrefix = new EmbedManager("UniG0 Disabled Channels", null, Color.ORANGE, cmd, null);
+                    EmbedManager embedManagerPrefix = new EmbedManager("UniG0 Disabled Channels", Color.ORANGE, cmd, event.getAuthor());
                     embedManagerPrefix.getEmbedBuilder().addField("Channels that are ignored:", ""
                             + collectionNewLineChannels(FileUtils.getDisabledChannels(event.getGuild().getId())) + "\n", true);
                     event.getChannel().sendMessage(embedManagerPrefix.getEmbedBuilder().build()).queue();
@@ -68,7 +68,7 @@ public class SettingsCommands extends CommandHandler {
                 if (FileUtils.getDisabledChannels(event.getGuild().getId()).contains(getChannel(args[1]).getId())) {
                     FileUtils.removeDisabledChannel(event.getGuild().getId(), getChannel(args[1]).getId());
                     event.getChannel().sendMessage("Successfully enabled the channel " + getChannel(args[1]).getAsMention() + "!").queue();
-                    EmbedManager embedManagerPrefix = new EmbedManager("UniG0 Enabled Channels", null, Color.ORANGE, cmd, null);
+                    EmbedManager embedManagerPrefix = new EmbedManager("UniG0 Enabled Channels", Color.ORANGE, cmd, event.getAuthor());
                     embedManagerPrefix.getEmbedBuilder().addField("Channels that are ignored:", ""
                             + collectionNewLineChannels(FileUtils.getDisabledChannels(event.getGuild().getId())) + "\n", true);
                     event.getChannel().sendMessage(embedManagerPrefix.getEmbedBuilder().build()).queue();
@@ -76,14 +76,14 @@ public class SettingsCommands extends CommandHandler {
                 }
                 FileUtils.addDisabledChannel(event.getGuild().getId(), getChannel(args[1]).getId());
                 event.getChannel().sendMessage("Successfully disabled the channel " + getChannel(args[1]).getAsMention() + "!").queue();
-                EmbedManager embedManagerPrefix = new EmbedManager("UniG0 Disabled Channels", null, Color.ORANGE, cmd, null);
+                EmbedManager embedManagerPrefix = new EmbedManager("UniG0 Disabled Channels", Color.ORANGE, cmd, event.getAuthor());
                 embedManagerPrefix.getEmbedBuilder().addField("Channels that are ignored:", ""
                         + collectionNewLineChannels(FileUtils.getDisabledChannels(event.getGuild().getId())) + "\n", true);
                 event.getChannel().sendMessage(embedManagerPrefix.getEmbedBuilder().build()).queue();
                 return;
             case "delete-commands":
                 if (args.length < 2) {
-                    EmbedManager embedManagerCMDDeletion = new EmbedManager("UniG0 Command Deletion", null, Color.ORANGE, cmd, null);
+                    EmbedManager embedManagerCMDDeletion = new EmbedManager("UniG0 Command Deletion", Color.ORANGE, cmd, event.getAuthor());
                     embedManagerCMDDeletion.getEmbedBuilder().addField("Commands that auto-delete:", ""
                             + collectionNewLine(FileUtils.getDeletedCommands(event.getGuild().getId())) + "\n", true);
                     event.getChannel().sendMessage(embedManagerCMDDeletion.getEmbedBuilder().build()).queue();
@@ -92,7 +92,7 @@ public class SettingsCommands extends CommandHandler {
                 if (FileUtils.getDeletedCommands(event.getGuild().getId()).contains(args[1])) {
                     FileUtils.removeDeletedCommand(event.getGuild().getId(), args[1]);
                     event.getChannel().sendMessage("Successfully removed the command `" + args[1] + "`!").queue();
-                    EmbedManager embedManagerCMDDeletion = new EmbedManager("UniG0 Command Deletion", null, Color.ORANGE, cmd, null);
+                    EmbedManager embedManagerCMDDeletion = new EmbedManager("UniG0 Command Deletion", Color.ORANGE, cmd, event.getAuthor());
                     embedManagerCMDDeletion.getEmbedBuilder().addField("Commands that auto-delete:", "```"
                             + collectionNewLine(FileUtils.getDeletedCommands(event.getGuild().getId())) + "\n```", true);
                     event.getChannel().sendMessage(embedManagerCMDDeletion.getEmbedBuilder().build()).queue();
@@ -100,14 +100,19 @@ public class SettingsCommands extends CommandHandler {
                 }
                 FileUtils.addDeletedCommand(event.getGuild().getId(), args[1]);
                 event.getChannel().sendMessage("Successfully added the command `" + args[1] + "`!").queue();
-                EmbedManager embedManagerCMDDeletion = new EmbedManager("UniG0 Command Deletion", null, Color.ORANGE, cmd, null);
+                EmbedManager embedManagerCMDDeletion = new EmbedManager("UniG0 Command Deletion", Color.ORANGE, cmd, event.getAuthor());
                 embedManagerCMDDeletion.getEmbedBuilder().addField("Commands that auto-delete:", "```"
                         + collectionNewLine(FileUtils.getDeletedCommands(event.getGuild().getId())) + "\n```", true);
                 event.getChannel().sendMessage(embedManagerCMDDeletion.getEmbedBuilder().build()).queue();
                 return;
+            case "reset":
+                event.getChannel().sendMessage("Resetting all configurations!").queue();
+                FileUtils.reset();
+                event.getChannel().sendMessage("Successfully reset!").queue();
+                return;
             default:
                 event.getChannel().sendMessage("Invalid option!").queue();
-                EmbedManager embedManager = new EmbedManager("UniG0 Options", null, Color.BLUE, cmd, null);
+                EmbedManager embedManager = new EmbedManager("UniG0 Options", Color.BLUE, cmd, event.getAuthor());
                 embedManager.getEmbedBuilder().addField(EmbedUtils.getEmbedGroup(new EntryImpl<>("Options", options)));
                 event.getChannel().sendMessage(embedManager.getEmbedBuilder().build()).queue();
         }

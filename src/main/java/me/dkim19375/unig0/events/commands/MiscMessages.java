@@ -6,6 +6,8 @@ import me.dkim19375.dkim19375jdautils.impl.EntryImpl;
 import me.dkim19375.unig0.util.CommandHandler;
 import me.dkim19375.unig0.util.FileUtils;
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.awt.*;
@@ -33,9 +35,10 @@ public class MiscMessages extends CommandHandler {
         commands.add("help");
         commands.add("options");
         commands.add("ping");
+        commands.add("announce <channel> <message>");
         switch (cmd.toLowerCase()) {
             case "help":
-                EmbedManager embedManager = new EmbedManager("UniG0 Help", null, Color.BLUE, cmd, null);
+                EmbedManager embedManager = new EmbedManager("UniG0 Help", Color.BLUE, cmd, event.getAuthor());
                 embedManager.getEmbedBuilder().addField(EmbedUtils.getEmbedGroup(new EntryImpl<>("Commands", commands)));
                 event.getChannel().sendMessage(embedManager.getEmbedBuilder().build()).queue();
                 return;
@@ -44,7 +47,36 @@ public class MiscMessages extends CommandHandler {
                         event.getChannel().sendMessageFormat("**Pong!**\nTook **%d ms**", time).queue()
                 );
                 return;
+            case "announce":
+                if (args.length < 2) {
+                    EmbedManager embedManagerAnnounce = new EmbedManager("UniG0 Help", Color.RED, cmd, event.getAuthor());
+                    embedManagerAnnounce.getEmbedBuilder().addField(new MessageEmbed.Field("Announcements Command Format",
+                            "announce <channel> <message>", true));
+                    event.getChannel().sendMessage(embedManagerAnnounce.getEmbedBuilder().build()).queue();
+                    return;
+                }
+                String message = getRestArgs(args, 1);
+                if (getChannel(args[0]) == null) {
+                    EmbedManager embedManagerAnnounce = new EmbedManager("Invalid Syntax", Color.RED, cmd, event.getAuthor());
+                    embedManagerAnnounce.getEmbedBuilder().addField(new MessageEmbed.Field("Announcements Command Format",
+                            "announce <channel> <message>", true));
+                    event.getChannel().sendMessage(embedManagerAnnounce.getEmbedBuilder().build()).queue();
+                    return;
+                }
+                EmbedManager embedManagerAnnounce = new EmbedManager("Announcement from " + event.getAuthor().getName()
+                        + "#" + event.getAuthor().getDiscriminator(), Color.CYAN, cmd, event.getAuthor());
+                embedManagerAnnounce.getEmbedBuilder().setDescription(message);
+                getChannel(args[0]).sendMessage(embedManagerAnnounce.getEmbedBuilder().build()).queue();
+                return;
         }
+    }
+
+    public TextChannel getChannel(final String ids) {
+        String newString = ids;
+        newString = newString.replace("<", "");
+        newString = newString.replace(">", "");
+        newString = newString.replace("#", "");
+        return getJDA().getTextChannelById(newString);
     }
 
     public String getRestArgs(String[] args, int index) {

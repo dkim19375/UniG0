@@ -26,6 +26,16 @@ public class FileUtils {
         }
     }
 
+    public static void reset() {
+        Map<String, SettingsManager> map = UniG0.getFileManager().getServerConfigs();
+        for (SettingsManager manager : map.values()) {
+            manager.set(ServerProperties.prefix, "?");
+            manager.set(ServerProperties.delete_commands, new HashSet<>());
+            manager.set(ServerProperties.disabled_channels, new HashSet<>());
+        }
+        save();
+    }
+
     public static String getPrefix(String id) {
         return UniG0.getFileManager().getServerConfig(id).get(ServerProperties.prefix);
     }
