@@ -63,8 +63,8 @@ public class MiscMessages extends CommandHandler {
                     event.getChannel().sendMessage(embedManagerAnnounce.getEmbedBuilder().build()).queue();
                     return;
                 }
-                EmbedManager embedManagerAnnounce = new EmbedManager("Announcement from " + event.getAuthor().getName()
-                        + "#" + event.getAuthor().getDiscriminator(), Color.CYAN, cmd, event.getAuthor());
+                EmbedManager embedManagerAnnounce = new EmbedManager("Announcement", Color.YELLOW, "Sent by "
+                        + event.getAuthor().getName() + "#" + event.getAuthor().getDiscriminator(), null);
                 embedManagerAnnounce.getEmbedBuilder().setDescription(message);
                 getChannel(args[0]).sendMessage(embedManagerAnnounce.getEmbedBuilder().build()).queue();
                 return;

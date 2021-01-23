@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="07ea7bea-52bf-44a1-a225-a01939c77775" name="Default Changelist" comment="Add a channel disabler">
+    <list default="true" id="07ea7bea-52bf-44a1-a225-a01939c77775" name="Default Changelist" comment="Add announcements">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/events/commands/MiscMessages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/events/commands/MiscMessages.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/events/commands/SettingsCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/events/commands/SettingsCommands.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/FileUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/FileUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -163,7 +160,14 @@
       <option name="project" value="LOCAL" />
       <updated>1611435434614</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Add announcements">
+      <created>1611439875037</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1611439875038</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -182,6 +186,7 @@
     <MESSAGE value="Support YAML" />
     <MESSAGE value="Added reload and delete-commands settings" />
     <MESSAGE value="Add a channel disabler" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add a channel disabler" />
+    <MESSAGE value="Add announcements" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add announcements" />
   </component>
 </project>
