@@ -5,13 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="07ea7bea-52bf-44a1-a225-a01939c77775" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/events/GuildMemberJoinLeave.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/events/messages/SettingsCommands.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/FileManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/datafiles/GlobalData.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/datafiles/ServerData.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/properties/GlobalProperties.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/properties/ServerProperties.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/UniG0.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/UniG0.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/messages/MiscMessages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/messages/MiscMessages.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/impl/EntryImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/messages/MiscMessages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/events/messages/MiscMessages.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/CommandHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/CommandHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/EmbedManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/EmbedUtils.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/FileUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/FileUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/MessageRecievedHolder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/PropertiesFile.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,6 +47,17 @@
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="UniG0" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="UniG0" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="UniG0" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="shadow" type="c8890929:TasksNode$1" />
               </path>
             </expand>
             <select />
@@ -62,7 +85,9 @@
     </file-type-list>
   </component>
   <component name="ProjectId" id="1nLulvee6KGkjIhHubwbpGZe43m" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -73,7 +98,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="settings.editor.selected.configurable" value="configurable.group.language" />
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.UniG0">
     <configuration name="UniG0" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="me.dkim19375.unig0.UniG0" />
       <module name="UniG0.main" />
@@ -87,8 +112,30 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="UniG0 [shadowJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="shadowJar" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.UniG0 [shadowJar]" />
         <item itemvalue="Application.UniG0" />
       </list>
     </recent_temporary>
@@ -102,6 +149,29 @@
       <option name="presentableId" value="Default" />
       <updated>1611181848984</updated>
     </task>
+    <task id="LOCAL-00001" summary="Made prefixes save on bot restarts">
+      <created>1611356254527</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1611356254527</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Made prefixes save on bot restarts" />
+    <option name="LAST_COMMIT_MESSAGE" value="Made prefixes save on bot restarts" />
   </component>
 </project>

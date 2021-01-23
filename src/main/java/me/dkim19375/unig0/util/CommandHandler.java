@@ -1,5 +1,8 @@
 package me.dkim19375.unig0.util;
 
+import me.dkim19375.dkim19375jdautils.holders.MessageRecievedHolder;
+import me.dkim19375.unig0.UniG0;
+import me.dkim19375.unig0.util.properties.ServerProperties;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -13,23 +16,22 @@ import java.util.List;
 
 public class CommandHandler extends ListenerAdapter {
     private final JDA jda;
-    private final PropertiesFile propertiesFile;
 
-    public CommandHandler(JDA jda, PropertiesFile propertiesFile) {
+    public CommandHandler(JDA jda) {
         this.jda = jda;
-        this.propertiesFile = propertiesFile;
     }
 
     @Nullable
-    public MessageRecievedHolder getMessage(@NotNull String message) {
+    public MessageRecievedHolder getMessage(@NotNull String message, @Nullable String serverId) {
         final String prefix;
         if (message.startsWith(jda.getSelfUser().getAsMention().replaceFirst("@", "@!"))) {
             prefix = jda.getSelfUser().getAsMention().replaceFirst("@", "@!");
         } else {
-            prefix = FileUtils.getPrefix(propertiesFile);
-        }
-        if (prefix == null) {
-            return null;
+            if (serverId == null) {
+                prefix = "?";
+            } else {
+                prefix = UniG0.getFileManager().getServerConfig(serverId).get(ServerProperties.prefix);
+            }
         }
         if (message.length() <= prefix.length()) {
             return null;
@@ -53,7 +55,7 @@ public class CommandHandler extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
-        MessageRecievedHolder msg = getMessage(event.getMessage().getContentRaw());
+        MessageRecievedHolder msg = getMessage(event.getMessage().getContentRaw(), event.getGuild().getId());
         if (msg != null) {
             onMessageReceived(msg.getCommand(), msg.getArgs(), msg.getPrefix(), msg.getAll(), event);
         }
@@ -61,7 +63,7 @@ public class CommandHandler extends ListenerAdapter {
 
     @Override
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
-        MessageRecievedHolder msg = getMessage(event.getMessage().getContentRaw());
+        MessageRecievedHolder msg = getMessage(event.getMessage().getContentRaw(), event.getGuild().getId());
         if (msg != null) {
             onGuildMessageReceived(msg.getCommand(), msg.getArgs(), msg.getPrefix(), msg.getAll(), event);
         }
@@ -69,21 +71,20 @@ public class CommandHandler extends ListenerAdapter {
 
     @Override
     public void onPrivateMessageReceived(@NotNull PrivateMessageReceivedEvent event) {
-        MessageRecievedHolder msg = getMessage(event.getMessage().getContentRaw());
+        MessageRecievedHolder msg = getMessage(event.getMessage().getContentRaw(), null);
         if (msg != null) {
             onPrivateMessageReceived(msg.getCommand(), msg.getArgs(), msg.getPrefix(), msg.getAll(), event);
         }
     }
 
+    @SuppressWarnings("unused")
     public void onMessageReceived(String cmd, String[] args, String prefix, String all, MessageReceivedEvent event) {  }
 
+    @SuppressWarnings("unused")
     public void onGuildMessageReceived(String cmd, String[] args, String prefix, String all, GuildMessageReceivedEvent event) {  }
 
+    @SuppressWarnings("unused")
     public void onPrivateMessageReceived(String cmd, String[] args, String prefix, String all, PrivateMessageReceivedEvent event) {  }
-
-    public PropertiesFile getPropertiesFile() {
-        return propertiesFile;
-    }
 
     public JDA getJDA() {
         return jda;
