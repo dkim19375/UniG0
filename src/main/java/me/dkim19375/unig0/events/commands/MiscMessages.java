@@ -32,6 +32,7 @@ public class MiscMessages extends CommandHandler {
         }
         commands.add("help");
         commands.add("options");
+        commands.add("ping");
         switch (cmd.toLowerCase()) {
             case "help":
                 EmbedManager embedManager = new EmbedManager("UniG0 Help", null, Color.BLUE, cmd, null);
@@ -39,6 +40,10 @@ public class MiscMessages extends CommandHandler {
                 event.getChannel().sendMessage(embedManager.getEmbedBuilder().build()).queue();
                 return;
             case "ping":
+                getJDA().getRestPing().queue( (time) ->
+                        event.getChannel().sendMessageFormat("**Pong!**\nTook **%d ms**", time).queue()
+                );
+                return;
         }
     }
 

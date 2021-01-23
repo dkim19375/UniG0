@@ -18,13 +18,21 @@ public class FileUtils {
         }
     }
 
+    public static void save() {
+        UniG0.getFileManager().getGlobalConfig().save();
+        Map<String, SettingsManager> map = UniG0.getFileManager().getServerConfigs();
+        for (SettingsManager manager : map.values()) {
+            manager.save();
+        }
+    }
+
     public static String getPrefix(String id) {
         return UniG0.getFileManager().getServerConfig(id).get(ServerProperties.prefix);
     }
 
     public static void setPrefix(String id, String prefix) {
         UniG0.getFileManager().getServerConfig(id).set(ServerProperties.prefix, prefix);
-        UniG0.getFileManager().getServerConfig(id).save();
+        reload();
     }
 
     public static String getToken() {
@@ -47,20 +55,47 @@ public class FileUtils {
 
     public static void setDeletedCommands(String id, Set<String> commands) {
         UniG0.getFileManager().getServerConfig(id).set(ServerProperties.delete_commands, commands);
-        UniG0.getFileManager().getServerConfig(id).save();
+        save();
     }
 
     public static void removeDeletedCommand(String id, String command) {
         Set<String> set = new HashSet<>(getDeletedCommands(id));
         set.remove(command);
         UniG0.getFileManager().getServerConfig(id).set(ServerProperties.delete_commands, set);
-        UniG0.getFileManager().getServerConfig(id).save();
+        save();
     }
 
     public static void addDeletedCommand(String id, String command) {
         Set<String> set = new HashSet<>(getDeletedCommands(id));
         set.add(command);
         UniG0.getFileManager().getServerConfig(id).set(ServerProperties.delete_commands, set);
-        UniG0.getFileManager().getServerConfig(id).save();
+        save();
+    }
+
+    public static Set<String> getDisabledChannels(String id) {
+        return UniG0.getFileManager().getServerConfig(id).get(ServerProperties.disabled_channels);
+    }
+
+    public static boolean shouldDisableChannel(String id, String channelID) {
+        return UniG0.getFileManager().getServerConfig(id).get(ServerProperties.disabled_channels).contains(channelID);
+    }
+
+    public static void setDisabledChannels(String id, Set<String> channelID) {
+        UniG0.getFileManager().getServerConfig(id).set(ServerProperties.disabled_channels, channelID);
+        save();
+    }
+
+    public static void removeDisabledChannel(String id, String channelID) {
+        Set<String> set = new HashSet<>(getDisabledChannels(id));
+        set.remove(channelID);
+        UniG0.getFileManager().getServerConfig(id).set(ServerProperties.disabled_channels, set);
+        save();
+    }
+
+    public static void addDisabledChannel(String id, String channelID) {
+        Set<String> set = new HashSet<>(getDisabledChannels(id));
+        set.add(channelID);
+        UniG0.getFileManager().getServerConfig(id).set(ServerProperties.disabled_channels, set);
+        save();
     }
 }

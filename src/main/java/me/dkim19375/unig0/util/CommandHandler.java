@@ -55,6 +55,9 @@ public class CommandHandler extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+        if (FileUtils.getDisabledChannels(event.getGuild().getId()).contains(event.getChannel().getId())) {
+            return;
+        }
         MessageRecievedHolder msg = getMessage(event.getMessage().getContentRaw(), event.getGuild().getId());
         if (msg != null) {
             onMessageReceived(msg.getCommand(), msg.getArgs(), msg.getPrefix(), msg.getAll(), event);
@@ -63,6 +66,9 @@ public class CommandHandler extends ListenerAdapter {
 
     @Override
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
+        if (FileUtils.getDisabledChannels(event.getGuild().getId()).contains(event.getChannel().getId())) {
+            return;
+        }
         MessageRecievedHolder msg = getMessage(event.getMessage().getContentRaw(), event.getGuild().getId());
         if (msg != null) {
             onGuildMessageReceived(msg.getCommand(), msg.getArgs(), msg.getPrefix(), msg.getAll(), event);

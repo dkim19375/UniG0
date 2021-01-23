@@ -13,4 +13,7 @@ public class ServerProperties implements SettingsHolder {
 
     @Path("delete-commands")
     public static final Property<Set<String>> delete_commands = Property.create(new HashSet<>());
+
+    @Path("disabled-channels")
+    public static final Property<Set<String>> disabled_channels = Property.create(new HashSet<>());
 }
