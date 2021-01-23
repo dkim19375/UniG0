@@ -27,10 +27,10 @@ public class CommandHandler extends ListenerAdapter {
         if (message.startsWith(jda.getSelfUser().getAsMention().replaceFirst("@", "@!"))) {
             prefix = jda.getSelfUser().getAsMention().replaceFirst("@", "@!");
         } else {
-            if (serverId == null) {
-                prefix = "?";
-            } else {
+            if (message.startsWith(UniG0.getFileManager().getServerConfig(serverId).get(ServerProperties.prefix))) {
                 prefix = UniG0.getFileManager().getServerConfig(serverId).get(ServerProperties.prefix);
+            } else {
+                return null;
             }
         }
         if (message.length() <= prefix.length()) {

@@ -4,26 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="07ea7bea-52bf-44a1-a225-a01939c77775" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/events/GuildMemberJoinLeave.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/events/messages/SettingsCommands.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/FileManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/datafiles/GlobalData.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/datafiles/ServerData.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/properties/GlobalProperties.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/properties/ServerProperties.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+    <list default="true" id="07ea7bea-52bf-44a1-a225-a01939c77775" name="Default Changelist" comment="Support YAML">
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/events/commands/SettingsCommands.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/UniG0.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/UniG0.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/impl/EntryImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/messages/MiscMessages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/events/messages/MiscMessages.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/events/messages/MiscMessages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/events/commands/MiscMessages.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/events/messages/SettingsCommands.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/CommandHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/CommandHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/EmbedManager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/EmbedUtils.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/FileUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/FileUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/MessageRecievedHolder.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/PropertiesFile.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/properties/ServerProperties.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/properties/ServerProperties.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -156,7 +145,14 @@
       <option name="project" value="LOCAL" />
       <updated>1611356254527</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Support YAML">
+      <created>1611427255562</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1611427255564</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -172,6 +168,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Made prefixes save on bot restarts" />
-    <option name="LAST_COMMIT_MESSAGE" value="Made prefixes save on bot restarts" />
+    <MESSAGE value="Support YAML" />
+    <option name="LAST_COMMIT_MESSAGE" value="Support YAML" />
   </component>
 </project>

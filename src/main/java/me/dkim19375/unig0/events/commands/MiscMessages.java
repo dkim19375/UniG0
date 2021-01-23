@@ -1,4 +1,4 @@
-package me.dkim19375.unig0.events.messages;
+package me.dkim19375.unig0.events.commands;
 
 import me.dkim19375.dkim19375jdautils.embeds.EmbedManager;
 import me.dkim19375.dkim19375jdautils.embeds.EmbedUtils;
@@ -24,29 +24,19 @@ public class MiscMessages extends CommandHandler {
             return;
         }
         final Set<String> commands = new HashSet<>();
-        event.getChannel().sendMessage("Prefix sent:" + prefix).queue();
-        event.getChannel().sendMessage("Actual prefix: " + FileUtils.getPrefix(event.getGuild().getId())).queue();
         if (!prefix.equalsIgnoreCase(FileUtils.getPrefix(event.getGuild().getId()))) {
             return;
         }
+        if (FileUtils.getDeletedCommands(event.getGuild().getId()).contains(cmd)) {
+            event.getMessage().delete().queue();
+        }
         commands.add("help");
-        commands.add("prefix");
+        commands.add("options");
         switch (cmd.toLowerCase()) {
             case "help":
                 EmbedManager embedManager = new EmbedManager("UniG0 Help", null, Color.BLUE, cmd, null);
                 embedManager.getEmbedBuilder().addField(EmbedUtils.getEmbedGroup(new EntryImpl<>("Commands", commands)));
                 event.getChannel().sendMessage(embedManager.getEmbedBuilder().build()).queue();
-                return;
-            case "prefix":
-                if (args.length == 0) {
-                    EmbedManager embedManagerPrefix = new EmbedManager("UniG0 Prefix", null, Color.BLUE, cmd, null);
-                    embedManagerPrefix.getEmbedBuilder().addField("Current Prefix:", "`" + FileUtils.getPrefix(event.getGuild().getId()) + "`\nYou can also use "
-                            + getJDA().getSelfUser().getAsMention() + " as the prefix!", true);
-                    event.getChannel().sendMessage(embedManagerPrefix.getEmbedBuilder().build()).queue();
-                    return;
-                }
-                FileUtils.setPrefix(event.getGuild().getId(), args[0]);
-                event.getChannel().sendMessage("Successfully changed the prefix to `" + FileUtils.getPrefix(event.getGuild().getId()) + "`!").queue();
                 return;
             case "ping":
         }

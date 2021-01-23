@@ -1,6 +1,7 @@
 package me.dkim19375.unig0;
 
-import me.dkim19375.unig0.events.messages.MiscMessages;
+import me.dkim19375.unig0.events.commands.MiscMessages;
+import me.dkim19375.unig0.events.commands.SettingsCommands;
 import me.dkim19375.unig0.util.FileManager;
 import me.dkim19375.unig0.util.properties.GlobalProperties;
 import net.dv8tion.jda.api.JDA;
@@ -23,6 +24,7 @@ public class UniG0 {
         builder.setActivity(Activity.watching("dkim19375 code"));
         JDA jda = builder.build();
         jda.addEventListener(new MiscMessages(jda));
+        jda.addEventListener(new SettingsCommands(jda));
     }
 
     public static FileManager getFileManager() {
