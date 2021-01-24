@@ -1,6 +1,7 @@
 package me.dkim19375.unig0;
 
 import me.dkim19375.unig0.events.Messagers;
+import me.dkim19375.unig0.events.commands.CustomEmbedCommands;
 import me.dkim19375.unig0.events.commands.MiscMessages;
 import me.dkim19375.unig0.events.commands.SettingsCommands;
 import me.dkim19375.unig0.util.FileManager;
@@ -29,6 +30,7 @@ public class UniG0 {
         jda.addEventListener(new MiscMessages(jda));
         jda.addEventListener(new SettingsCommands(jda));
         jda.addEventListener(new Messagers(jda));
+        jda.addEventListener(new CustomEmbedCommands(jda));
     }
 
     public static FileManager getFileManager() {

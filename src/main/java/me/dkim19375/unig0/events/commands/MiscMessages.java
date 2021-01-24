@@ -36,6 +36,7 @@ public class MiscMessages extends CommandHandler {
         commands.add("options");
         commands.add("ping");
         commands.add("announce <channel> <message>");
+        commands.add("embed");
         switch (cmd.toLowerCase()) {
             case "help":
                 EmbedManager embedManager = new EmbedManager("UniG0 Help", Color.BLUE, cmd, event.getAuthor());
@@ -43,9 +44,11 @@ public class MiscMessages extends CommandHandler {
                 event.getChannel().sendMessage(embedManager.getEmbedBuilder().build()).queue();
                 return;
             case "ping":
-                getJDA().getRestPing().queue( (time) ->
-                        event.getChannel().sendMessageFormat("**Pong!**\nTook **%d ms**", time).queue()
-                );
+                getJDA().getRestPing().queue( (time) -> {
+                    EmbedManager embedManagerPing = new EmbedManager("UniG0 Pinger", Color.GREEN, cmd, event.getAuthor());
+                    embedManagerPing.getEmbedBuilder().setDescription("**Pong!**\nTook **" + time + " ms**");
+                    event.getChannel().sendMessage(embedManagerPing.getEmbedBuilder().build()).queue();
+                });
                 return;
             case "announce":
                 if (args.length < 2) {
