@@ -16,7 +16,6 @@ public class Messagers extends ListenerAdapter {
 
     @Override
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
-        System.out.println("test");
         if (FileUtils.isWelcomeDMEnabled(event.getGuild().getId())) {
             welcomeDM(event);
         }
@@ -26,17 +25,14 @@ public class Messagers extends ListenerAdapter {
     }
 
     public void welcomeDM(GuildMemberJoinEvent event) {
-        System.out.println("dm");
         String message = parsePlaceholders(FileUtils.getDMMessage(event.getGuild().getId()), event);
         event.getUser().openPrivateChannel().queue((channel) -> channel.sendMessage(message).queue());
     }
 
     public void welcomeMessage(GuildMemberJoinEvent event) {
-        System.out.println("join");
         if (getChannel(FileUtils.getWelcomeChannel(event.getGuild().getId())) == null) {
             return;
         }
-        System.out.println("join message");
         TextChannel textChannel = getChannel(FileUtils.getWelcomeChannel(event.getGuild().getId()));
         textChannel.sendMessage(FileUtils.getWelcomeMessage(event.getGuild().getId())).queue();
     }
