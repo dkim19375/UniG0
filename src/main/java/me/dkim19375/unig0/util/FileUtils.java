@@ -32,6 +32,11 @@ public class FileUtils {
             manager.set(ServerProperties.prefix, "?");
             manager.set(ServerProperties.delete_commands, new HashSet<>());
             manager.set(ServerProperties.disabled_channels, new HashSet<>());
+            manager.set(ServerProperties.welcomer_dm, "Welcome to {ServerName}!\nHave a great time!");
+            manager.set(ServerProperties.welcomer_message, "{user} has join the server!\nWe are now at {members} members!");
+            manager.set(ServerProperties.welcomer_channel, "");
+            manager.set(ServerProperties.welcomer_enabled_dm, true);
+            manager.set(ServerProperties.welcomer_enabled_message, true);
         }
         save();
     }
@@ -42,7 +47,7 @@ public class FileUtils {
 
     public static void setPrefix(String id, String prefix) {
         UniG0.getFileManager().getServerConfig(id).set(ServerProperties.prefix, prefix);
-        reload();
+        save();
     }
 
     public static String getToken() {
@@ -106,6 +111,51 @@ public class FileUtils {
         Set<String> set = new HashSet<>(getDisabledChannels(id));
         set.add(channelID);
         UniG0.getFileManager().getServerConfig(id).set(ServerProperties.disabled_channels, set);
+        save();
+    }
+
+    public static boolean isWelcomeMessageEnabled(String id) {
+        return UniG0.getFileManager().getServerConfig(id).get(ServerProperties.welcomer_enabled_message);
+    }
+
+    public static void setWelcomeMessageEnabled(String id, boolean enabled) {
+        UniG0.getFileManager().getServerConfig(id).set(ServerProperties.welcomer_enabled_message, enabled);
+        save();
+    }
+
+    public static boolean isWelcomeDMEnabled(String id) {
+        return UniG0.getFileManager().getServerConfig(id).get(ServerProperties.welcomer_enabled_dm);
+    }
+
+    public static void setWelcomeDMEnabled(String id, boolean enabled) {
+        UniG0.getFileManager().getServerConfig(id).set(ServerProperties.welcomer_enabled_dm, enabled);
+        save();
+    }
+
+    public static String getWelcomeMessage(String id) {
+        return UniG0.getFileManager().getServerConfig(id).get(ServerProperties.welcomer_message);
+    }
+
+    public static void setWelcomeMessage(String id, String message) {
+        UniG0.getFileManager().getServerConfig(id).set(ServerProperties.welcomer_message, message);
+        save();
+    }
+
+    public static String getDMMessage(String id) {
+        return UniG0.getFileManager().getServerConfig(id).get(ServerProperties.welcomer_dm);
+    }
+
+    public static void setDMMessage(String id, String message) {
+        UniG0.getFileManager().getServerConfig(id).set(ServerProperties.welcomer_dm, message);
+        save();
+    }
+
+    public static String getWelcomeChannel(String id) {
+        return UniG0.getFileManager().getServerConfig(id).get(ServerProperties.welcomer_channel);
+    }
+
+    public static void setWelcomeChannel(String id, String channelId) {
+        UniG0.getFileManager().getServerConfig(id).set(ServerProperties.welcomer_channel, channelId);
         save();
     }
 }

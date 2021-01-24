@@ -26,10 +26,10 @@ public class MiscMessages extends CommandHandler {
             return;
         }
         final Set<String> commands = new HashSet<>();
-        if (!prefix.equalsIgnoreCase(FileUtils.getPrefix(event.getGuild().getId()))) {
-            return;
-        }
         if (FileUtils.getDeletedCommands(event.getGuild().getId()).contains(cmd)) {
+            event.getMessage().delete().queue();
+        }
+        if (FileUtils.getDeletedCommands(event.getGuild().getId()).contains("*")) {
             event.getMessage().delete().queue();
         }
         commands.add("help");

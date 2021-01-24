@@ -27,7 +27,7 @@ public class CommandHandler extends ListenerAdapter {
         if (message.startsWith(jda.getSelfUser().getAsMention().replaceFirst("@", "@!"))) {
             prefix = jda.getSelfUser().getAsMention().replaceFirst("@", "@!");
         } else {
-            if (message.startsWith(UniG0.getFileManager().getServerConfig(serverId).get(ServerProperties.prefix))) {
+            if (message.toLowerCase().startsWith(UniG0.getFileManager().getServerConfig(serverId).get(ServerProperties.prefix).toLowerCase())) {
                 prefix = UniG0.getFileManager().getServerConfig(serverId).get(ServerProperties.prefix);
             } else {
                 return null;
@@ -55,9 +55,12 @@ public class CommandHandler extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
-        if (FileUtils.getDisabledChannels(event.getGuild().getId()).contains(event.getChannel().getId())) {
-            return;
-        }
+        try {
+            if (FileUtils.getDisabledChannels(event.getGuild().getId()).contains(event.getChannel().getId())) {
+                return;
+            }
+        } catch (IllegalStateException ignored) {  }
+
         MessageRecievedHolder msg = getMessage(event.getMessage().getContentRaw(), event.getGuild().getId());
         if (msg != null) {
             onMessageReceived(msg.getCommand(), msg.getArgs(), msg.getPrefix(), msg.getAll(), event);

@@ -4,9 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="07ea7bea-52bf-44a1-a225-a01939c77775" name="Default Changelist" comment="Add announcements">
+    <list default="true" id="07ea7bea-52bf-44a1-a225-a01939c77775" name="Default Changelist" comment="Finish up announcements">
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/events/Messagers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/UniG0.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/UniG0.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/events/commands/MiscMessages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/events/commands/MiscMessages.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/events/commands/SettingsCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/events/commands/SettingsCommands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/CommandHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/CommandHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/FileUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/FileUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/properties/ServerProperties.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/properties/ServerProperties.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,6 +87,9 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="configurable.group.language" />
   </component>
   <component name="RunManager" selected="Application.UniG0">
@@ -167,7 +178,14 @@
       <option name="project" value="LOCAL" />
       <updated>1611439875038</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Finish up announcements">
+      <created>1611440572103</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1611440572103</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -187,6 +205,7 @@
     <MESSAGE value="Added reload and delete-commands settings" />
     <MESSAGE value="Add a channel disabler" />
     <MESSAGE value="Add announcements" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add announcements" />
+    <MESSAGE value="Finish up announcements" />
+    <option name="LAST_COMMIT_MESSAGE" value="Finish up announcements" />
   </component>
 </project>

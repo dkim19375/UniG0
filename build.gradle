@@ -7,7 +7,7 @@ plugins {
 mainClassName = 'me.dkim19375.unig0.UniG0'
 
 //noinspection GroovyUnusedAssignment
-sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_11
 compileJava.options.encoding 'UTF-8'
 
 group 'me.dkim19375'

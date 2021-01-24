@@ -30,6 +30,7 @@ public class SettingsCommands extends CommandHandler {
         options.add("delete-commands *|<command>");
         options.add("disable-channels <channel|id>");
         options.add("reset");
+        options.add("welcomer WelcomeMessage <message>|DMMessage <message>|MessageEnabled <true/false>|DMEnabled <true/false>|channel <channel>");
 
         if (args.length < 1) {
             EmbedManager embedManager = new EmbedManager("UniG0 Options", Color.BLUE, cmd, event.getAuthor());
@@ -110,6 +111,25 @@ public class SettingsCommands extends CommandHandler {
                 FileUtils.reset();
                 event.getChannel().sendMessage("Successfully reset!").queue();
                 return;
+            case "welcomer":
+                if (args.length < 2) {
+                    EmbedManager embedManagerWelcomer = new EmbedManager("UniG0 Welcomer", Color.BLUE, cmd, event.getAuthor());
+                    embedManagerWelcomer.getEmbedBuilder().addField("Enabled:",
+                            "```\nPublic Message: " + FileUtils.isWelcomeMessageEnabled(event.getGuild().getId())
+                            + "\nDM Message: " + FileUtils.isWelcomeDMEnabled(event.getGuild().getId()) + "```", false);
+                    embedManagerWelcomer.getEmbedBuilder().addField("Messages:",
+                            "```\nPublic Message: " + FileUtils.getWelcomeMessage(event.getGuild().getId())
+                                    + "\nDM Message: " + FileUtils.getDMMessage(event.getGuild().getId()) + "```", false);
+                    if (getChannel(FileUtils.getWelcomeChannel(event.getGuild().getId())) == null) {
+                        embedManagerWelcomer.getEmbedBuilder().addField("Channels:",
+                                "Public Message: NONE", false);
+                    } else {
+                        embedManagerWelcomer.getEmbedBuilder().addField("Channels:",
+                                "Public Message: " + getChannel(FileUtils.getWelcomeChannel(event.getGuild().getId())).getAsMention(), false);
+                    }
+                    event.getChannel().sendMessage(embedManagerWelcomer.getEmbedBuilder().build()).queue();
+                    return;
+                }
             default:
                 event.getChannel().sendMessage("Invalid option!").queue();
                 EmbedManager embedManager = new EmbedManager("UniG0 Options", Color.BLUE, cmd, event.getAuthor());
@@ -123,6 +143,10 @@ public class SettingsCommands extends CommandHandler {
         newString = newString.replace("<", "");
         newString = newString.replace(">", "");
         newString = newString.replace("#", "");
+        newString = newString.trim();
+        if (newString.equals("")) {
+            return null;
+        }
         return getJDA().getTextChannelById(newString);
     }
 
