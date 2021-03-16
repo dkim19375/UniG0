@@ -4,12 +4,36 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="07ea7bea-52bf-44a1-a225-a01939c77775" name="Default Changelist" comment="Remove Debugs">
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/events/commands/CustomEmbedCommands.java" afterDir="false" />
+    <list default="true" id="07ea7bea-52bf-44a1-a225-a01939c77775" name="Default Changelist" comment="Added lots of stuff">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/dkim19375/unig0/UniG0.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/dkim19375/unig0/events/GuildMemberJoinLeave.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/dkim19375/unig0/events/Messagers.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/dkim19375/unig0/events/commands/CustomEmbedCommands.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/dkim19375/unig0/events/commands/MiscMessages.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/dkim19375/unig0/events/commands/SettingsCommands.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/dkim19375/unig0/util/CommandHandler.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/dkim19375/unig0/util/FileManager.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/dkim19375/unig0/util/FileUtils.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/dkim19375/unig0/util/MessageRunnableWrapper.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/dkim19375/unig0/util/SpecificGuildMessageReactionListener.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/dkim19375/unig0/util/properties/GlobalProperties.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/me/dkim19375/unig0/util/properties/ServerProperties.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/UniG0.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/UniG0.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/events/commands/MiscMessages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/events/commands/MiscMessages.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/UniG0.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/events/GuildMemberJoinLeave.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/events/Messagers.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/events/commands/CustomEmbedCommands.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/events/commands/MiscMessages.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/events/commands/SettingsCommands.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/CommandHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/FileManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/FileUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/datafiles/GlobalData.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/datafiles/ServerData.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/properties/GlobalProperties.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/dkim19375/unig0/util/properties/ServerProperties.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,6 +94,9 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
+  <component name="GitToolBoxStore">
+    <option name="projectConfigVersion" value="2" />
+  </component>
   <component name="ProjectId" id="1nLulvee6KGkjIhHubwbpGZe43m" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -82,12 +109,21 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="project.structure.last.edited" value="Project" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="configurable.group.language" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
-  <component name="RunManager" selected="Application.UniG0">
+  <component name="RunManager" selected="Gradle.UniG0 [shadowJar]">
     <configuration name="UniG0" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="me.dkim19375.unig0.UniG0" />
       <module name="UniG0.main" />
@@ -97,6 +133,17 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -137,6 +184,24 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1611181848984</updated>
+      <workItem from="1611785502171" duration="257000" />
+      <workItem from="1611785803357" duration="901000" />
+      <workItem from="1611786783033" duration="1833000" />
+      <workItem from="1611795911193" duration="580000" />
+      <workItem from="1611797023796" duration="1439000" />
+      <workItem from="1611884713876" duration="3000" />
+      <workItem from="1611885468331" duration="2289000" />
+      <workItem from="1611956984948" duration="957000" />
+      <workItem from="1611961217023" duration="541000" />
+      <workItem from="1612641936953" duration="252000" />
+      <workItem from="1613599378352" duration="2276000" />
+      <workItem from="1614654320501" duration="49000" />
+      <workItem from="1614717707442" duration="2402000" />
+      <workItem from="1614978909264" duration="3016000" />
+      <workItem from="1614986832473" duration="129000" />
+      <workItem from="1615165894505" duration="392000" />
+      <workItem from="1615240881908" duration="645000" />
+      <workItem from="1615924020499" duration="3568000" />
     </task>
     <task id="LOCAL-00001" summary="Made prefixes save on bot restarts">
       <created>1611356254527</created>
@@ -194,8 +259,18 @@
       <option name="project" value="LOCAL" />
       <updated>1611449893335</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Added lots of stuff">
+      <created>1611453205014</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1611453205015</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -207,6 +282,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Made prefixes save on bot restarts" />
@@ -217,6 +293,7 @@
     <MESSAGE value="Finish up announcements" />
     <MESSAGE value="Welcomer" />
     <MESSAGE value="Remove Debugs" />
-    <option name="LAST_COMMIT_MESSAGE" value="Remove Debugs" />
+    <MESSAGE value="Added lots of stuff" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added lots of stuff" />
   </component>
 </project>

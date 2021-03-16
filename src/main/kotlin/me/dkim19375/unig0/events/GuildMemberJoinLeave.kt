@@ -1,12 +1,8 @@
-package me.dkim19375.unig0.events;
+package me.dkim19375.unig0.events
 
-import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.jetbrains.annotations.NotNull;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent
+import net.dv8tion.jda.api.hooks.ListenerAdapter
 
-public class GuildMemberJoinLeave extends ListenerAdapter {
-
-    @Override
-    public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
-    }
+class GuildMemberJoinLeave : ListenerAdapter() {
+    override fun onGuildMemberJoin(event: GuildMemberJoinEvent) {}
 }
