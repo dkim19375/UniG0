@@ -10,15 +10,6 @@ import java.awt.Color
 import java.util.*
 
 class CustomEmbedCommands(jda: JDA) : CommandHandler(jda) {
-    /*    private final List<MessageEmbed.Field> fields = new LinkedList<>();
-    private final StringBuilder description = new StringBuilder();
-    private int color = Role.DEFAULT_COLOR_RAW;
-    private String url, title;
-    private OffsetDateTime timestamp;
-    private MessageEmbed.Thumbnail thumbnail;
-    private MessageEmbed.AuthorInfo author;
-    private MessageEmbed.Footer footer;
-    private MessageEmbed.ImageInfo image;*/
     override fun onGuildMessageReceived(
         cmd: String,
         args: Array<String>,
@@ -29,7 +20,7 @@ class CustomEmbedCommands(jda: JDA) : CommandHandler(jda) {
         if (!cmd.equals("embed", ignoreCase = true)) {
             return
         }
-        if (args.size < 1) {
+        if (args.isEmpty()) {
             val types: MutableSet<String> = HashSet()
             types.add("Title <title>")
             types.add("TitleUrl <url>")

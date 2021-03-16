@@ -20,6 +20,6 @@ class MessageRunnableWrapper(
             emotes[emote.key] = emote.value
             return
         }
-        emotes[emote.key]!!.addAll(emote.value)
+        emotes[emote.key]?.addAll(emote.value)
     }
 }

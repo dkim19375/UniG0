@@ -70,7 +70,8 @@ class MiscMessages(private val jda: JDA) : CommandHandler(jda) {
                     return
                 }
                 val message = getRestArgs(args, 1)
-                if (getChannel(args[0]) == null) {
+                val channel = getChannel(args[0])
+                if (channel == null) {
                     val embedManagerAnnounce = EmbedManager("Invalid Syntax", Color.RED, cmd, event.author)
                     embedManagerAnnounce.embedBuilder.addField(
                         MessageEmbed.Field(
@@ -86,7 +87,7 @@ class MiscMessages(private val jda: JDA) : CommandHandler(jda) {
                             + event.author.name + "#" + event.author.discriminator, null
                 )
                 embedManagerAnnounce.embedBuilder.setDescription(message)
-                getChannel(args[0])!!.sendMessage(embedManagerAnnounce.embedBuilder.build()).queue()
+                channel.sendMessage(embedManagerAnnounce.embedBuilder.build()).queue()
                 return
             }
         }

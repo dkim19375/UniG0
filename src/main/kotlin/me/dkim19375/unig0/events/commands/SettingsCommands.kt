@@ -67,13 +67,14 @@ You can also use ${jda.selfUser.asMention} as the prefix!""", true
                     sendDisabledChannels(cmd, event)
                     return
                 }
-                if (getChannel(args[1]) == null) {
+                val channel = getChannel(args[1])
+                if (channel == null) {
                     event.channel.sendMessage("Invalid channel!").queue()
                     return
                 }
-                if (FileUtils.getDisabledChannels(event.guild.id).contains(getChannel(args[1])!!.id)) {
-                    FileUtils.removeDisabledChannel(event.guild.id, getChannel(args[1])!!.id)
-                    event.channel.sendMessage("Successfully enabled the channel " + getChannel(args[1])!!.asMention + "!")
+                if (FileUtils.getDisabledChannels(event.guild.id).contains(channel.id)) {
+                    FileUtils.removeDisabledChannel(event.guild.id, channel.id)
+                    event.channel.sendMessage("Successfully enabled the channel " + channel.asMention + "!")
                         .queue()
                     val embedManagerPrefix = EmbedManager("UniG0 Enabled Channels", Color.ORANGE, cmd, event.author)
                     embedManagerPrefix.embedBuilder.addField(
@@ -85,8 +86,8 @@ You can also use ${jda.selfUser.asMention} as the prefix!""", true
                     event.channel.sendMessage(embedManagerPrefix.embedBuilder.build()).queue()
                     return
                 }
-                FileUtils.addDisabledChannel(event.guild.id, getChannel(args[1])!!.id)
-                event.channel.sendMessage("Successfully disabled the channel " + getChannel(args[1])!!.asMention + "!")
+                FileUtils.addDisabledChannel(event.guild.id, channel.id)
+                event.channel.sendMessage("Successfully disabled the channel " + channel.asMention + "!")
                     .queue()
                 sendDisabledChannels(cmd, event)
                 return
@@ -148,7 +149,7 @@ You can also use ${jda.selfUser.asMention} as the prefix!""", true
                     } else {
                         embedManagerWelcomer.embedBuilder.addField(
                             "Channels:",
-                            "Public Message: " + getChannel(FileUtils.getWelcomeChannel(event.guild.id))!!.asMention,
+                            "Public Message: " + (getChannel(FileUtils.getWelcomeChannel(event.guild.id))?.asMention ?: "None"),
                             false
                         )
                     }
@@ -232,7 +233,7 @@ You can also use ${jda.selfUser.asMention} as the prefix!""", true
     private fun collectionNewLineChannels(collection: Collection<String>): String {
         val finished = StringBuilder()
         for (c in collection) {
-            val s = getChannel(c)!!.asMention
+            val s = getChannel(c)?.asMention
             finished.append("\n").append(s)
         }
         return finished.toString()
