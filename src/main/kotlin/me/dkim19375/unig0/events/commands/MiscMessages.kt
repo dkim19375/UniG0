@@ -23,18 +23,18 @@ class MiscMessages(private val jda: JDA) : CommandHandler(jda) {
         if (event.author.isBot) {
             return
         }
-        val commands: MutableSet<String> = HashSet()
+        val commands = setOf(
+            "help",
+            "options",
+            "ping",
+            "announce <channel> <message>",
+            "embed")
         if (FileUtils.getDeletedCommands(event.guild.id).contains(cmd)) {
             event.message.delete().queue()
         }
         if (FileUtils.getDeletedCommands(event.guild.id).contains("*")) {
             event.message.delete().queue()
         }
-        commands.add("help")
-        commands.add("options")
-        commands.add("ping")
-        commands.add("announce <channel> <message>")
-        commands.add("embed")
         when (cmd.toLowerCase()) {
             "help" -> {
                 val embedManager = EmbedManager("UniG0 Help", Color.BLUE, cmd, event.author)

@@ -74,14 +74,14 @@ object FileUtils {
     }
 
     fun removeDeletedCommand(id: String, command: String) {
-        val set: MutableSet<String?> = HashSet(getDeletedCommands(id))
+        val set: MutableSet<String> = HashSet(getDeletedCommands(id))
         set.remove(command)
         UniG0.fileManager.getServerConfig(id).set(ServerProperties.delete_commands, set)
         save()
     }
 
     fun addDeletedCommand(id: String, command: String) {
-        val set: MutableSet<String?> = HashSet(getDeletedCommands(id))
+        val set: MutableSet<String> = HashSet(getDeletedCommands(id))
         set.add(command)
         UniG0.fileManager.getServerConfig(id).set(ServerProperties.delete_commands, set)
         save()
@@ -101,14 +101,14 @@ object FileUtils {
     }
 
     fun removeDisabledChannel(id: String, channelID: String) {
-        val set: MutableSet<String?> = HashSet(getDisabledChannels(id))
+        val set: MutableSet<String> = HashSet(getDisabledChannels(id))
         set.remove(channelID)
         UniG0.fileManager.getServerConfig(id).set(ServerProperties.disabled_channels, set)
         save()
     }
 
     fun addDisabledChannel(id: String, channelID: String) {
-        val set: MutableSet<String?> = HashSet(getDisabledChannels(id))
+        val set: MutableSet<String> = HashSet(getDisabledChannels(id))
         set.add(channelID)
         UniG0.fileManager.getServerConfig(id).set(ServerProperties.disabled_channels, set)
         save()

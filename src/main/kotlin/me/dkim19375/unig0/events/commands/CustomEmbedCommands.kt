@@ -21,25 +21,26 @@ class CustomEmbedCommands(jda: JDA) : CommandHandler(jda) {
             return
         }
         if (args.isEmpty()) {
-            val types: MutableSet<String> = HashSet()
-            types.add("Title <title>")
-            types.add("TitleUrl <url>")
-            types.add("Description <description>")
-            types.add("Avatar <image-url>")
-            types.add("AuthorName <name>")
-            types.add("AuthorUrl <url>")
-            types.add("Thumbnail <image-url>")
-            types.add("Fields (too many params to show here)")
-            types.add("Image <image-url>")
-            types.add("Color <int/color>")
-            types.add("Footer <footer-text>")
-            types.add("Icon <image-url>")
-            types.add("import <json>")
-            types.add("export")
+            val types = setOf(
+                "Title <title>",
+                "TitleUrl <url>",
+                "Description <description>",
+                "Avatar <image-url>",
+                "AuthorName <name>",
+                "AuthorUrl <url>",
+                "Thumbnail <image-url>",
+                "Fields (too many params to show here,",
+                "Image <image-url>",
+                "Color <int/color>",
+                "Footer <footer-text>",
+                "Icon <image-url>",
+                "import <json>",
+                "export",
+            )
             val embedManager = EmbedManager("UniG0 Embed Editor", Color.BLUE, cmd, event.author)
             embedManager.embedBuilder.addField(
                 EmbedUtils.getEmbedGroup(
-                    EntryImpl<String, Set<String>>(
+                    EntryImpl(
                         "Arguments:",
                         types
                     )

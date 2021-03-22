@@ -21,18 +21,19 @@ class SettingsCommands(private val jda: JDA) : CommandHandler(jda) {
         if (!cmd.equals("options", ignoreCase = true)) {
             return
         }
-        val options = mutableSetOf<String>()
-        options.add("prefix")
-        options.add("reload")
-        options.add("delete-commands *|<command>")
-        options.add("disable-channels <channel|id>")
-        options.add("reset")
-        options.add("welcomer WelcomeMessage <message>|DMMessage <message>|MessageEnabled <true/false>|DMEnabled <true/false>|channel <channel>")
+        val options = setOf(
+            "prefix",
+            "reload",
+            "delete-commands *|<command>",
+            "disable-channels <channel|id>",
+            "reset",
+            "welcomer WelcomeMessage <message>|DMMessage <message>|MessageEnabled <true/false>|DMEnabled <true/false>|channel <channel>",
+        )
         if (args.isEmpty()) {
             val embedManager = EmbedManager("UniG0 Options", Color.BLUE, cmd, event.author)
             embedManager.embedBuilder.addField(
                 EmbedUtils.getEmbedGroup(
-                    EntryImpl<String, Set<String>>(
+                    EntryImpl(
                         "Options",
                         options
                     )
@@ -149,7 +150,8 @@ You can also use ${jda.selfUser.asMention} as the prefix!""", true
                     } else {
                         embedManagerWelcomer.embedBuilder.addField(
                             "Channels:",
-                            "Public Message: " + (getChannel(FileUtils.getWelcomeChannel(event.guild.id))?.asMention ?: "None"),
+                            "Public Message: " + (getChannel(FileUtils.getWelcomeChannel(event.guild.id))?.asMention
+                                ?: "None"),
                             false
                         )
                     }
@@ -196,13 +198,13 @@ You can also use ${jda.selfUser.asMention} as the prefix!""", true
     private fun sendInvalidOptionMessage(
         cmd: String,
         event: GuildMessageReceivedEvent,
-        options: MutableSet<String>
+        options: Set<String>
     ) {
         event.channel.sendMessage("Invalid option!").queue()
         val embedManager = EmbedManager("UniG0 Options", Color.BLUE, cmd, event.author)
         embedManager.embedBuilder.addField(
             EmbedUtils.getEmbedGroup(
-                EntryImpl<String, Set<String>>(
+                EntryImpl(
                     "Options",
                     options
                 )
