@@ -1,5 +1,6 @@
-package me.dkim19375.unig0.events
+package me.dkim19375.unig0.event
 
+import me.dkim19375.unig0.UniG0
 import me.dkim19375.unig0.util.FileUtils
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.PrivateChannel
@@ -7,7 +8,9 @@ import net.dv8tion.jda.api.entities.TextChannel
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 
-class Messagers(private val jda: JDA) : ListenerAdapter() {
+class Messagers(private val main: UniG0) : ListenerAdapter() {
+    private val jda = main.jda
+
     override fun onGuildMemberJoin(event: GuildMemberJoinEvent) {
         if (FileUtils.isWelcomeDMEnabled(event.guild.id)) {
             welcomeDM(event)

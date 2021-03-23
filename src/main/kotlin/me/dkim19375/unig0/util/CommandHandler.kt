@@ -2,7 +2,7 @@ package me.dkim19375.unig0.util
 
 import me.dkim19375.dkim19375jdautils.holders.MessageRecievedHolder
 import me.dkim19375.unig0.UniG0
-import me.dkim19375.unig0.util.properties.ServerProperties
+import me.dkim19375.unig0.util.property.ServerProperties
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
@@ -59,7 +59,12 @@ open class CommandHandler(private val JDA: JDA) : ListenerAdapter() {
         }
         val msg = getMessage(event.message.contentRaw, event.guild.id)
         if (msg != null) {
-            onMessageReceived(msg.command, msg.args, msg.prefix, msg.all, event)
+            try {
+                onMessageReceived(msg.command, msg.args, msg.prefix, msg.all, event)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                event.channel.sendMessage("An internal error has occurred!").queue()
+            }
         }
     }
 
@@ -69,14 +74,24 @@ open class CommandHandler(private val JDA: JDA) : ListenerAdapter() {
         }
         val msg = getMessage(event.message.contentRaw, event.guild.id)
         if (msg != null) {
-            onGuildMessageReceived(msg.command, msg.args, msg.prefix, msg.all, event)
+            try {
+                onGuildMessageReceived(msg.command, msg.args, msg.prefix, msg.all, event)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                event.channel.sendMessage("An internal error has occurred!").queue()
+            }
         }
     }
 
     override fun onPrivateMessageReceived(event: PrivateMessageReceivedEvent) {
         val msg = getMessage(event.message.contentRaw, null)
         if (msg != null) {
-            onPrivateMessageReceived(msg.command, msg.args, msg.prefix, msg.all, event)
+            try {
+                onPrivateMessageReceived(msg.command, msg.args, msg.prefix, msg.all, event)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                event.channel.sendMessage("An internal error has occurred!").queue()
+            }
         }
     }
 

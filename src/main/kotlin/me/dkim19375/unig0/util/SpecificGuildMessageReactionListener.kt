@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionRemove
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 import java.util.*
 
+@Suppress("MemberVisibilityCanBePrivate")
 class SpecificGuildMessageReactionListener(val jda: JDA, messages: Map<Message, ReactionEmote?>) : ListenerAdapter() {
     private val messages: Map<Message, Map<ReactionEmote?, Set<Runnable>>>
     fun getMessages(): Map<Message, Set<ReactionEmote?>> {

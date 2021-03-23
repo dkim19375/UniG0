@@ -1,4 +1,4 @@
-package me.dkim19375.unig0.events
+package me.dkim19375.unig0.event
 
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter

@@ -1,4 +1,4 @@
-package me.dkim19375.unig0.util.properties
+package me.dkim19375.unig0.util.property
 
 import me.mattstudios.config.SettingsHolder
 import me.mattstudios.config.annotations.Path

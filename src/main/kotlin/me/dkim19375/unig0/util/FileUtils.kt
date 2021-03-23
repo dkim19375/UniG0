@@ -1,8 +1,8 @@
 package me.dkim19375.unig0.util
 
 import me.dkim19375.unig0.UniG0
-import me.dkim19375.unig0.util.properties.GlobalProperties
-import me.dkim19375.unig0.util.properties.ServerProperties
+import me.dkim19375.unig0.util.property.GlobalProperties
+import me.dkim19375.unig0.util.property.ServerProperties
 import java.util.*
 
 object FileUtils {
