@@ -5,10 +5,7 @@ import me.dkim19375.dkim19375jdautils.embeds.EmbedUtils
 import me.dkim19375.dkim19375jdautils.impl.EntryImpl
 import me.dkim19375.unig0.UniG0
 import me.dkim19375.unig0.util.*
-import me.dkim19375.unig0.util.function.combinedArgs
-import me.dkim19375.unig0.util.function.combinedCmds
-import me.dkim19375.unig0.util.function.getCommandByName
-import me.dkim19375.unig0.util.function.getOfType
+import me.dkim19375.unig0.util.function.*
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
 import java.awt.Color
 
@@ -45,9 +42,9 @@ class HelpCommand(private val main: UniG0) : Command(main.jda) {
         if (type == null) {
             val command = main.commands.getCommandByName(args[0])
             if (command != null) {
-                println("not null cmd")
                 val embedManager = EmbedManager("UniG0 $name: ${command.name}", Color.BLUE, cmd, event.author)
                 embedManager.embedBuilder.addField("Information:", command.description, false)
+                embedManager.embedBuilder.addField("Aliases:", command.aliases.putBetween(", "), false)
                 if (command.arguments.isEmpty()) {
                     embedManager.embedBuilder.addField("Arguments - ${command.name}:", "None", false)
                 } else {
