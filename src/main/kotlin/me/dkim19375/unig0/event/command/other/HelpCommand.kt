@@ -44,7 +44,11 @@ class HelpCommand(private val main: UniG0) : Command(main.jda) {
             if (command != null) {
                 val embedManager = EmbedManager("UniG0 $name: ${command.name}", Color.BLUE, cmd, event.author)
                 embedManager.embedBuilder.addField("Information:", command.description, false)
-                embedManager.embedBuilder.addField("Aliases:", command.aliases.putBetween(", "), false)
+                if (command.aliases.isEmpty()) {
+                    embedManager.embedBuilder.addField("Aliases:", "None", false)
+                } else {
+                    embedManager.embedBuilder.addField("Aliases:", "```\n- ${command.aliases.putBetween("\n- ")}```", false)
+                }
                 if (command.arguments.isEmpty()) {
                     embedManager.embedBuilder.addField("Arguments - ${command.name}:", "None", false)
                 } else {
