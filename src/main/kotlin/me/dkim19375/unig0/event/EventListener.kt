@@ -1,25 +1,25 @@
-package me.dkim19375.unig0.util
+package me.dkim19375.unig0.event
 
 import me.dkim19375.dkim19375jdautils.holders.MessageRecievedHolder
 import me.dkim19375.unig0.UniG0
+import me.dkim19375.unig0.util.FileUtils
 import me.dkim19375.unig0.util.property.ServerProperties
-import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
-import java.util.*
+import java.util.ArrayList
 
-open class CommandHandler(private val JDA: JDA) : ListenerAdapter() {
+class EventListener(private val main: UniG0) : ListenerAdapter() {
     private fun getMessage(message: String, serverId: String?): MessageRecievedHolder? {
         if (serverId == null) {
-            if (!message.startsWith(JDA.selfUser.asMention.replaceFirst("@".toRegex(), "@!"))) {
+            if (!message.startsWith(main.jda.selfUser.asMention.replaceFirst("@".toRegex(), "@!"))) {
                 return null
             }
         }
-        val prefix: String = if (serverId == null) JDA.selfUser.asMention.replaceFirst("@".toRegex(), "@!")
-        else if (message.startsWith(JDA.selfUser.asMention.replaceFirst("@".toRegex(), "@!"))) {
-            JDA.selfUser.asMention.replaceFirst("@".toRegex(), "@!")
+        val prefix: String = if (serverId == null) main.jda.selfUser.asMention.replaceFirst("@".toRegex(), "@!")
+        else if (message.startsWith(main.jda.selfUser.asMention.replaceFirst("@".toRegex(), "@!"))) {
+            main.jda.selfUser.asMention.replaceFirst("@".toRegex(), "@!")
         } else {
             if (message.toLowerCase().startsWith(
                     UniG0.fileManager.getServerConfig(serverId).get(ServerProperties.prefix).toLowerCase()
@@ -60,7 +60,7 @@ open class CommandHandler(private val JDA: JDA) : ListenerAdapter() {
         val msg = getMessage(event.message.contentRaw, event.guild.id)
         if (msg != null) {
             try {
-                onMessageReceived(msg.command, msg.args, msg.prefix, msg.all, event)
+                main.onMessageReceived(msg.command, msg.args, msg.prefix, msg.all, event)
             } catch (e: Exception) {
                 e.printStackTrace()
                 event.channel.sendMessage("An internal error has occurred!").queue()
@@ -75,7 +75,7 @@ open class CommandHandler(private val JDA: JDA) : ListenerAdapter() {
         val msg = getMessage(event.message.contentRaw, event.guild.id)
         if (msg != null) {
             try {
-                onGuildMessageReceived(msg.command, msg.args, msg.prefix, msg.all, event)
+                main.onGuildMessageReceived(msg.command, msg.args, msg.prefix, msg.all, event)
             } catch (e: Exception) {
                 e.printStackTrace()
                 event.channel.sendMessage("An internal error has occurred!").queue()
@@ -87,41 +87,11 @@ open class CommandHandler(private val JDA: JDA) : ListenerAdapter() {
         val msg = getMessage(event.message.contentRaw, null)
         if (msg != null) {
             try {
-                onPrivateMessageReceived(msg.command, msg.args, msg.prefix, msg.all, event)
+                main.onPrivateMessageReceived(msg.command, msg.args, msg.prefix, msg.all, event)
             } catch (e: Exception) {
                 e.printStackTrace()
                 event.channel.sendMessage("An internal error has occurred!").queue()
             }
         }
-    }
-
-    @Suppress("MemberVisibilityCanBePrivate", "UNUSED_PARAMETER")
-    fun onMessageReceived(
-        cmd: String,
-        args: Array<String>,
-        prefix: String,
-        all: String,
-        event: MessageReceivedEvent
-    ) {
-    }
-
-    @Suppress("UNUSED_PARAMETER")
-    open fun onGuildMessageReceived(
-        cmd: String,
-        args: Array<String>,
-        prefix: String,
-        all: String,
-        event: GuildMessageReceivedEvent
-    ) {
-    }
-
-    @Suppress("UNUSED_PARAMETER")
-    fun onPrivateMessageReceived(
-        cmd: String,
-        args: Array<String>,
-        prefix: String,
-        all: String,
-        event: PrivateMessageReceivedEvent
-    ) {
     }
 }
