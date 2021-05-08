@@ -8,6 +8,7 @@ import me.dkim19375.unig0.util.CommandType
 import me.dkim19375.unig0.util.FileUtils
 import me.dkim19375.unig0.util.function.getChannel
 import me.dkim19375.unig0.util.function.putBetween
+import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
 import java.awt.Color
 
@@ -16,6 +17,7 @@ class OptionsCommand(private val main: UniG0) : Command(main.jda) {
     override val name = "Options"
     override val aliases = setOf<String>()
     override val description = "Change options for the bot"
+    override val permissions = setOf(Permission.MANAGE_SERVER)
     override val arguments = setOf(
         CommandArg(this, "prefix", "Change the bot prefix"),
         CommandArg(this, "reload", "Reload the bot's data and configuration files"),
@@ -31,16 +33,13 @@ class OptionsCommand(private val main: UniG0) : Command(main.jda) {
     override val minArgs = 1
     private val jda = main.jda
 
-    override fun onGuildMessageReceived(
+    override fun onGuildCommand(
         cmd: String,
         args: Array<String>,
         prefix: String,
         all: String,
         event: GuildMessageReceivedEvent
     ) {
-        if (!isValid(cmd, args, event)) {
-            return
-        }
         when (args[0].toLowerCase()) {
             "prefix" -> {
                 if (args.size < 2) {
