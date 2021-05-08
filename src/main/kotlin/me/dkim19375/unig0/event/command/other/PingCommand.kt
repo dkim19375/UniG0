@@ -18,16 +18,13 @@ class PingCommand(private val main: UniG0) : Command(main.jda) {
     override val minArgs = 0
     private val jda = main.jda
 
-    override fun onGuildMessageReceived(
+    override fun onGuildCommand(
         cmd: String,
-        args: Array<String>,
+        args: List<String>,
         prefix: String,
         all: String,
         event: GuildMessageReceivedEvent
     ) {
-        if (!isValid(cmd, args, event)) {
-            return
-        }
         jda.restPing.queue { time: Long ->
             val embedManagerPing = EmbedManager("UniG0 Pinger", Color.GREEN, cmd, event.author)
             embedManagerPing.embedBuilder.setDescription("**Pong!**\nTook **$time ms**")

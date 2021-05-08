@@ -4,6 +4,7 @@ import me.dkim19375.unig0.UniG0
 import me.dkim19375.unig0.util.Command
 import me.dkim19375.unig0.util.CommandArg
 import me.dkim19375.unig0.util.CommandType
+import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
 
 class CustomEmbedCommands(private val main: UniG0) : Command(main.jda) {
@@ -29,18 +30,16 @@ class CustomEmbedCommands(private val main: UniG0) : Command(main.jda) {
     )
     override val type = CommandType.UTILITIES
     override val minArgs = 1
+    override val permissions = setOf(Permission.MESSAGE_MANAGE)
     private val jda = main.jda
 
-    override fun onGuildMessageReceived(
+    override fun onGuildCommand(
         cmd: String,
-        args: Array<String>,
+        args: List<String>,
         prefix: String,
         all: String,
         event: GuildMessageReceivedEvent
     ) {
-        if (!isValid(cmd, args, event)) {
-            return
-        }
 
     }
 }

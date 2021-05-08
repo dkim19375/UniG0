@@ -1,4 +1,4 @@
-package me.dkim19375.unig0.event.command.utilities
+package me.dkim19375.unig0.event.command.other
 
 import me.dkim19375.dkim19375jdautils.embeds.EmbedManager
 import me.dkim19375.unig0.UniG0
@@ -35,7 +35,7 @@ class OptionsCommand(private val main: UniG0) : Command(main.jda) {
 
     override fun onGuildCommand(
         cmd: String,
-        args: Array<String>,
+        args: List<String>,
         prefix: String,
         all: String,
         event: GuildMessageReceivedEvent

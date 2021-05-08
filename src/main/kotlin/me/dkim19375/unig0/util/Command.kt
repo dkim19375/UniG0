@@ -6,6 +6,7 @@ import me.dkim19375.dkim19375jdautils.impl.EntryImpl
 import me.dkim19375.unig0.util.function.combinedArgs
 import me.dkim19375.unig0.util.function.containsIgnoreCase
 import net.dv8tion.jda.api.JDA
+import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent
@@ -19,32 +20,9 @@ abstract class Command(jda: JDA) {
     abstract val arguments: Set<CommandArg>
     abstract val type: CommandType
     abstract val minArgs: Int
+    open val permissions: Set<Permission> = setOf()
 
-    fun isValid(
-        cmd: String,
-        args: Array<String>,
-        event: GuildMessageReceivedEvent
-    ): Boolean {
-        if (!cmd.equals(command, ignoreCase = true)) {
-            return false
-        }
-        if (event.author.isBot) {
-            return false
-        }
-        if (FileUtils.getDeletedCommands(event.guild.id).containsIgnoreCase(cmd)) {
-            event.message.delete().queue()
-        }
-        if (FileUtils.getDeletedCommands(event.guild.id).contains("*")) {
-            event.message.delete().queue()
-        }
-        if (args.size < minArgs) {
-            sendHelpUsage(cmd, event)
-            return false
-        }
-        return true
-    }
-
-    private fun sendHelpUsage(
+    fun sendHelpUsage(
         cmd: String,
         event: GuildMessageReceivedEvent
     ) {
@@ -53,9 +31,33 @@ abstract class Command(jda: JDA) {
         event.channel.sendMessage(embedManager.embedBuilder.build()).queue()
     }
 
-    open fun onMessageReceived(
+    fun sendHelpUsage(
         cmd: String,
-        args: Array<String>,
+        event: MessageReceivedEvent
+    ) {
+        val embedManager = EmbedManager("UniG0 $name", Color.BLUE, cmd, event.author)
+        embedManager.embedBuilder.addField(EmbedUtils.getEmbedGroup(EntryImpl("Arguments:", arguments.combinedArgs())))
+        event.channel.sendMessage(embedManager.embedBuilder.build()).queue()
+    }
+
+    fun sendHelpUsage(
+        cmd: String,
+        event: PrivateMessageReceivedEvent
+    ) {
+        val embedManager = EmbedManager("UniG0 $name", Color.BLUE, cmd, event.author)
+        embedManager.embedBuilder.addField(EmbedUtils.getEmbedGroup(EntryImpl("Arguments:", arguments.combinedArgs())))
+        event.channel.sendMessage(embedManager.embedBuilder.build()).queue()
+    }
+
+    open fun onMessageReceived(
+        message: String,
+        event: MessageReceivedEvent
+    ) {
+    }
+
+    open fun onCommand(
+        cmd: String,
+        args: List<String>,
         prefix: String,
         all: String,
         event: MessageReceivedEvent
@@ -63,8 +65,14 @@ abstract class Command(jda: JDA) {
     }
 
     open fun onGuildMessageReceived(
+        message: String,
+        event: GuildMessageReceivedEvent
+    ) {
+    }
+
+    open fun onGuildCommand(
         cmd: String,
-        args: Array<String>,
+        args: List<String>,
         prefix: String,
         all: String,
         event: GuildMessageReceivedEvent
@@ -72,8 +80,14 @@ abstract class Command(jda: JDA) {
     }
 
     open fun onPrivateMessageReceived(
+        message: String,
+        event: PrivateMessageReceivedEvent
+    ) {
+    }
+
+    open fun onPrivateCommand(
         cmd: String,
-        args: Array<String>,
+        args: List<String>,
         prefix: String,
         all: String,
         event: PrivateMessageReceivedEvent

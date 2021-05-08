@@ -1,4 +1,4 @@
-package me.dkim19375.unig0.event.command.utilities
+package me.dkim19375.unig0.event.command.other
 
 import me.dkim19375.unig0.UniG0
 import me.dkim19375.unig0.util.Command
@@ -17,11 +17,17 @@ class RestartCommand(private val main: UniG0) : Command(main.jda) {
     override val minArgs = 0
     private val jda = main.jda
 
-    override fun onCommand(cmd: String, args: Array<String>, prefix: String, all: String, event: MessageReceivedEvent) {
+    override fun onCommand(cmd: String, args: List<String>, prefix: String, all: String, event: MessageReceivedEvent) {
         if (event.author.idLong != DKIM19375_ID) {
             event.channel.sendMessage("You do not have permission!").queue()
             return
         }
-        event.channel.sendMessage("Restarting bot...").queue()
+        event.channel.sendMessage("Restarting bot...").queue({
+            main.startBot()
+        }
+        ) { error ->
+            event.channel.sendMessage("Error!").queue()
+            throw IllegalStateException("Could not restart bot!", error)
+        }
     }
 }

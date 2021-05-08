@@ -7,6 +7,7 @@ import me.dkim19375.unig0.util.CommandArg
 import me.dkim19375.unig0.util.CommandType
 import me.dkim19375.unig0.util.function.getChannel
 import me.dkim19375.unig0.util.function.getRestArgs
+import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.entities.MessageEmbed
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
 import java.awt.Color
@@ -21,18 +22,16 @@ class AnnounceCommand(private val main: UniG0) : Command(main.jda) {
     )
     override val type = CommandType.UTILITIES
     override val minArgs = 2
+    override val permissions = setOf(Permission.MESSAGE_MANAGE)
     private val jda = main.jda
 
-    override fun onGuildMessageReceived(
+    override fun onGuildCommand(
         cmd: String,
-        args: Array<String>,
+        args: List<String>,
         prefix: String,
         all: String,
         event: GuildMessageReceivedEvent
     ) {
-        if (!isValid(cmd, args, event)) {
-            return
-        }
         val message = args.getRestArgs(1)
         val channel = args[0].getChannel(jda)
         if (channel == null) {

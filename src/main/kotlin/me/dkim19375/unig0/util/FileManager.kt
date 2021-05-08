@@ -33,9 +33,7 @@ class FileManager {
     }
 
     fun getServerConfig(id: String): SettingsManager {
-        if (serverConfigs.containsKey(id)) {
-            return serverConfigs[id]!!
-        }
+        serverConfigs[id]?.let { return it }
         addServerId(id)
         return serverConfigs[id]!!
     }

@@ -13,19 +13,8 @@ fun Collection<String>.containsIgnoreCase(other: String): Boolean {
     return false
 }
 
-fun Array<String>.getRestArgs(index: Int): String {
-    var str = StringBuilder()
-    var i = 0
-    for (ignored in this) {
-        if (i < index) {
-            i++
-            continue
-        }
-        str.append(this[i]).append(" ")
-        i++
-    }
-    str = StringBuilder(str.toString().trim { it <= ' ' })
-    return str.toString()
+fun List<String>.getRestArgs(drop: Int): String {
+    return drop(drop).joinToString(" ", transform = String::trim)
 }
 
 fun Set<Command>.getOfType(type: CommandType): Set<Command>{

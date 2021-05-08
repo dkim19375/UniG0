@@ -1,7 +1,6 @@
 package me.dkim19375.unig0.util
 
 enum class CommandType(val displayname: String) {
-    OPTIONS("Options"),
     FUN("Fun"),
     LEVELS("Levels"),
     LOGGING("Logging"),
