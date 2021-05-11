@@ -7,6 +7,9 @@ import me.dkim19375.unig0.util.function.getEmbedField
 import me.dkim19375.unig0.util.property.ServerProperties
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.Permission
+import net.dv8tion.jda.api.entities.GuildChannel
+import net.dv8tion.jda.api.entities.Member
+import net.dv8tion.jda.api.entities.User
 import net.dv8tion.jda.api.events.Event
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
@@ -22,6 +25,7 @@ abstract class Command(private val jda: JDA) {
     abstract val type: CommandType
     abstract val minArgs: Int
     open val permissions: Set<Permission> = setOf()
+    open val whitelistUsers: Set<Long> = setOf()
 
     fun sendHelpUsage(
         cmd: String,
@@ -34,6 +38,7 @@ abstract class Command(private val jda: JDA) {
             is MessageReceivedEvent -> event.author
             else -> return
         }
+        val member: Member? = (event as? GuildMessageReceivedEvent)?.member
         val guild = when (event) {
             is GuildMessageReceivedEvent -> event.guild
             is MessageReceivedEvent -> event.guild
@@ -44,6 +49,9 @@ abstract class Command(private val jda: JDA) {
             is PrivateMessageReceivedEvent -> event.channel
             is MessageReceivedEvent -> event.channel
             else -> return
+        }
+        if (!hasPermissions(user, member, channel as? GuildChannel)) {
+            return
         }
         val embedManager = EmbedManager("UniG0 ${command.name}", Color.BLUE, cmd, user)
         embedManager.embedBuilder.addField(
@@ -58,6 +66,17 @@ abstract class Command(private val jda: JDA) {
         embedManager.embedBuilder.addField(command.arguments.combinedArgs().getEmbedField("Arguments:"))
         channel.sendMessage(embedManager.embedBuilder.build()).queue()
     }
+    
+    fun hasPermissions(user: User, member: Member? = null, channel: GuildChannel? = null): Boolean {
+        if (whitelistUsers.isNotEmpty() && !whitelistUsers.contains(user.idLong)) {
+            return false
+        }
+        member ?: return true
+        if (channel != null) {
+            return member.hasPermission(channel, permissions)
+        }
+        return member.hasPermission(permissions)
+    } 
 
     open fun onMessageReceived(
         message: String,

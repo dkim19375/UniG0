@@ -13,7 +13,7 @@ import java.util.*
 class SpecificGuildMessageReactionListener(val jda: JDA, messages: Map<Message, ReactionEmote?>) : ListenerAdapter() {
     private val messages: Map<Message, Map<ReactionEmote?, Set<Runnable>>>
     fun getMessages(): Map<Message, Set<ReactionEmote?>> {
-        val emoteMap: MutableMap<Message, Set<ReactionEmote?>> = HashMap()
+        val emoteMap = mutableMapOf<Message, Set<ReactionEmote?>>()
         for (key in messages.keys) {
             val msg = messages[key]?: continue
             emoteMap[key] = msg.keys
@@ -78,10 +78,10 @@ class SpecificGuildMessageReactionListener(val jda: JDA, messages: Map<Message, 
     }
 
     init {
-        val map: MutableMap<Message, Map<ReactionEmote?, Set<Runnable>>> = HashMap()
+        val map = mutableMapOf<Message, Map<ReactionEmote?, Set<Runnable>>>()
         for (key in messages.keys) {
-            val m: MutableMap<ReactionEmote?, Set<Runnable>> = HashMap()
-            m[messages[key]] = HashSet()
+            val m = mutableMapOf<ReactionEmote?, Set<Runnable>>()
+            m[messages[key]] = mutableSetOf()
             map[key] = m
         }
         this.messages = map

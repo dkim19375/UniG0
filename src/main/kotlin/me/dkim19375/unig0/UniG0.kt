@@ -2,12 +2,15 @@ package me.dkim19375.unig0
 
 import me.dkim19375.unig0.event.EventListener
 import me.dkim19375.unig0.event.command.`fun`.AnnoyCommand
-import me.dkim19375.unig0.event.command.other.*
+import me.dkim19375.unig0.event.command.other.HelpCommand
+import me.dkim19375.unig0.event.command.other.OptionsCommand
+import me.dkim19375.unig0.event.command.other.PingCommand
+import me.dkim19375.unig0.event.command.other.StopCommand
 import me.dkim19375.unig0.event.command.utilities.AnnounceCommand
 import me.dkim19375.unig0.event.command.utilities.CustomEmbedCommands
 import me.dkim19375.unig0.util.Command
 import me.dkim19375.unig0.util.FileManager
-import me.dkim19375.unig0.util.property.GlobalProperties
+import me.dkim19375.unig0.util.FileUtils
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
@@ -37,7 +40,7 @@ object UniG0 {
             restart = true
         }
         println("Starting bot")
-        val builder = JDABuilder.createDefault(fileManager.globalConfig.get(GlobalProperties.token))
+        val builder = JDABuilder.createDefault(FileUtils.token)
         val jda = builder.build()
         this.jda = jda
         jda.presence.activity = Activity.watching("dkim19375 code")
@@ -60,20 +63,47 @@ object UniG0 {
         thread {
             val scanner = Scanner(System.`in`)
             while (scanner.hasNext()) {
-                if (scanner.nextLine().equals("stop", ignoreCase = true)) {
+                val next = scanner.nextLine()
+                if (next.equals("stop", ignoreCase = true)) {
                     println("Stopping the bot!")
                     jda.shutdown()
                     println("Stopped")
                     stopped = true
                     exitProcess(0)
                 }
-                if (scanner.nextLine().equals("restart", ignoreCase = true)) {
-                    println("Restarting the bot!")
-                    startBot()
-                    println("Bot restarted!")
+                if (next.startsWith("message", ignoreCase = true)) {
+                    messageCommand(next)
                 }
             }
         }
+    }
+
+    private fun messageCommand(next: String) {
+        val args = next.split(" ").drop(1)
+        if (args.size < 2) {
+            println("Too little args! Usage: message <channel> <message>")
+            return
+        }
+        val channelId = args[0].toLongOrNull()
+        val message = args.drop(1).joinToString(" ")
+        if (channelId == null) {
+            println("Invalid channel! Usage: message <channel> <message>")
+            return
+        }
+        jda.getTextChannelById(channelId)?.let { channel ->
+            channel.sendMessage(message).queue()
+            return
+        }
+        jda.getPrivateChannelById(channelId)?.let { channel ->
+            channel.sendMessage(message).queue()
+            return
+        }
+        jda.openPrivateChannelById(channelId).queue ({ channel ->
+            channel.sendMessage(message).queue()
+        }, { error ->
+            throw error
+        })
+        println("Invalid channel!")
     }
 
     private fun registerCommands() {
@@ -89,7 +119,5 @@ object UniG0 {
         jda.addEventListener(EventListener(this))
     }
 
-    fun sendEvent(event: (Command) -> Unit) {
-        commands.forEach(event)
-    }
+    fun sendEvent(event: (Command) -> Unit) = commands.forEach(event)
 }

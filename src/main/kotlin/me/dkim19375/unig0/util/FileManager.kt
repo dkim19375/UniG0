@@ -9,7 +9,7 @@ import java.util.*
 class FileManager {
     var globalConfig: SettingsManager
         private set
-    private val serverConfigs: MutableMap<String, SettingsManager> = HashMap()
+    private val serverConfigs = mutableMapOf<String, SettingsManager>()
 
     init {
         val file = Paths.get("data", "global-config.yml").toFile()

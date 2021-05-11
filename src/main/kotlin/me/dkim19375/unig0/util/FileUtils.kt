@@ -28,8 +28,8 @@ object FileUtils {
         val map = UniG0.fileManager.getServerConfigs()
         for (manager in map.values) {
             manager.set(ServerProperties.prefix, "?")
-            manager.set(ServerProperties.delete_commands, HashSet())
-            manager.set(ServerProperties.disabled_channels, HashSet())
+            manager.set(ServerProperties.delete_commands, emptySet())
+            manager.set(ServerProperties.disabled_channels, emptySet())
             manager.set(ServerProperties.welcomer_dm, "Welcome to {ServerName}!\nHave a great time!")
             manager.set(
                 ServerProperties.welcomer_message,

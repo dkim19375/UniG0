@@ -66,16 +66,9 @@ fun Iterable<String>.containsIgnoreCase(find: String): Boolean = getIgnoreCase(f
 fun Iterable<String>.getIgnoreCase(find: String): String? = firstOrNull { it.equals(find, ignoreCase = true) }
 
 fun Set<Command>.getCommandByName(name: String): Command? {
-    forEach { cmd ->
-        if (cmd.name.equals(name, ignoreCase = true)) {
-            return cmd
-        }
-        if (cmd.command.equals(name, ignoreCase = true)) {
-            return cmd
-        }
-        if (cmd.aliases.containsIgnoreCase(name)) {
-            return cmd
-        }
+    return firstOrNull { cmd ->
+        cmd.name.equals(name, ignoreCase = true)
+                || cmd.command.equals(name, ignoreCase = true)
+                || cmd.aliases.containsIgnoreCase(name)
     }
-    return null
 }

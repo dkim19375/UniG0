@@ -45,6 +45,9 @@ class HelpCommand(private val main: UniG0) : Command(main.jda) {
             sendHelpUsage(cmd, event, command)
             return
         }
+        args[0].getCommand()?.let { helpCmd ->
+            
+        }
         val embedManager = EmbedManager("UniG0 $name: ${type.displayname}", Color.BLUE, cmd, event.author)
         embedManager.embedBuilder.addField("TIP:", "Do ${FileUtils.getPrefix(event.guild.id)}help <command> " +
                 "to view information about a specific command!", false)

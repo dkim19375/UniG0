@@ -40,6 +40,6 @@ class CustomEmbedCommands(private val main: UniG0) : Command(main.jda) {
         all: String,
         event: GuildMessageReceivedEvent
     ) {
-
+        
     }
 }
