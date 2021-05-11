@@ -1,6 +1,7 @@
 package me.dkim19375.unig0
 
 import me.dkim19375.unig0.event.EventListener
+import me.dkim19375.unig0.event.command.`fun`.AnnoyCommand
 import me.dkim19375.unig0.event.command.other.*
 import me.dkim19375.unig0.event.command.utilities.AnnounceCommand
 import me.dkim19375.unig0.event.command.utilities.CustomEmbedCommands
@@ -20,6 +21,7 @@ object UniG0 {
     lateinit var jda: JDA
     lateinit var commands: Set<Command>
     var restart = false
+    var stopped = false
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -27,7 +29,7 @@ object UniG0 {
         startBot()
     }
 
-    fun startBot() {
+    private fun startBot() {
         if (this::jda.isInitialized) {
             println("Stopping the bot!")
             jda.shutdown()
@@ -43,6 +45,18 @@ object UniG0 {
         if (restart) {
             return
         }
+        try {
+            Runtime.getRuntime().addShutdownHook(thread(false) {
+                if (!stopped) {
+                    println("Stopping the bot!")
+                    jda.shutdown()
+                    println("Stopped")
+                    stopped = true
+                }
+            })
+        } catch (e: IllegalStateException) {
+            e.printStackTrace()
+        }
         thread {
             val scanner = Scanner(System.`in`)
             while (scanner.hasNext()) {
@@ -50,6 +64,7 @@ object UniG0 {
                     println("Stopping the bot!")
                     jda.shutdown()
                     println("Stopped")
+                    stopped = true
                     exitProcess(0)
                 }
                 if (scanner.nextLine().equals("restart", ignoreCase = true)) {
@@ -68,8 +83,8 @@ object UniG0 {
             AnnounceCommand(this),
             CustomEmbedCommands(this),
             OptionsCommand(this),
-            RestartCommand(this),
             StopCommand(this),
+            AnnoyCommand(this)
         )
         jda.addEventListener(EventListener(this))
     }

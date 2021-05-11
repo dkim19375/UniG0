@@ -10,10 +10,13 @@ object ServerProperties : SettingsHolder {
     val prefix = Property.create("?")
 
     @Path("delete-commands")
-    val delete_commands = Property.create(HashSet())
+    val delete_commands = Property.create(setOf())
+
+    @Path("disabled-commands")
+    val disabled_commands = Property.create(setOf())
 
     @Path("disabled-channels")
-    val disabled_channels = Property.create(HashSet())
+    val disabled_channels = Property.create(setOf())
 
     @Path("welcomer.enabled.message")
     val welcomer_enabled_message = Property.create(true)

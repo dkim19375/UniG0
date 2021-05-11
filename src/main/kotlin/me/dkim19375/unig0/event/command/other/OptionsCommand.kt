@@ -6,8 +6,9 @@ import me.dkim19375.unig0.util.Command
 import me.dkim19375.unig0.util.CommandArg
 import me.dkim19375.unig0.util.CommandType
 import me.dkim19375.unig0.util.FileUtils
+import me.dkim19375.unig0.util.function.containsIgnoreCase
 import me.dkim19375.unig0.util.function.getChannel
-import me.dkim19375.unig0.util.function.putBetween
+import me.dkim19375.unig0.util.function.getEmbedField
 import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
 import java.awt.Color
@@ -17,11 +18,12 @@ class OptionsCommand(private val main: UniG0) : Command(main.jda) {
     override val name = "Options"
     override val aliases = setOf<String>()
     override val description = "Change options for the bot"
-    override val permissions = setOf(Permission.MANAGE_SERVER)
+    override val permissions = setOf(Permission.ADMINISTRATOR)
     override val arguments = setOf(
         CommandArg(this, "prefix", "Change the bot prefix"),
         CommandArg(this, "reload", "Reload the bot's data and configuration files"),
         CommandArg(this, "delete-commands *|<command>", "Change which commands get deleted when used"),
+        CommandArg(this, "disable-commands <command>", "Change which commands are disabled"),
         CommandArg(this, "disable-channels <channel|id>", "Change which channels are ignored"),
         CommandArg(
             this,
@@ -43,12 +45,12 @@ class OptionsCommand(private val main: UniG0) : Command(main.jda) {
         when (args[0].toLowerCase()) {
             "prefix" -> {
                 if (args.size < 2) {
-                    val embedManagerPrefix = EmbedManager("UniG0 Prefix", Color.BLUE, cmd, event.author)
-                    embedManagerPrefix.embedBuilder.addField(
+                    val embedManager = EmbedManager("UniG0 Prefix", Color.BLUE, cmd, event.author)
+                    embedManager.embedBuilder.addField(
                         "Current Prefix:", """`${FileUtils.getPrefix(event.guild.id)}`
 You can also use ${jda.selfUser.asMention} as the prefix!""", false
                     )
-                    event.channel.sendMessage(embedManagerPrefix.embedBuilder.build()).queue()
+                    event.channel.sendMessage(embedManager.embedBuilder.build()).queue()
                     return
                 }
                 FileUtils.setPrefix(event.guild.id, args[1])
@@ -75,14 +77,7 @@ You can also use ${jda.selfUser.asMention} as the prefix!""", false
                     FileUtils.removeDisabledChannel(event.guild.id, channel.id)
                     event.channel.sendMessage("Successfully enabled the channel " + channel.asMention + "!")
                         .queue()
-                    val embedManagerPrefix = EmbedManager("UniG0 Enabled Channels", Color.ORANGE, cmd, event.author)
-                    embedManagerPrefix.embedBuilder.addField(
-                        "Channels that are ignored:", """
-     ${collectionNewLineChannels(FileUtils.getDisabledChannels(event.guild.id))}
-     
-     """.trimIndent(), false
-                    )
-                    event.channel.sendMessage(embedManagerPrefix.embedBuilder.build()).queue()
+                    sendDisabledChannels(cmd, event)
                     return
                 }
                 FileUtils.addDisabledChannel(event.guild.id, channel.id)
@@ -91,17 +86,25 @@ You can also use ${jda.selfUser.asMention} as the prefix!""", false
                 sendDisabledChannels(cmd, event)
                 return
             }
+            "disable-commands" -> {
+                if (args.size < 2) {
+                    sendDisabledCommands(cmd, event)
+                    return
+                }
+                if (FileUtils.getDisabledCommands(event.guild.id).containsIgnoreCase(args[1])) {
+                    FileUtils.enableCommand(event.guild.id, args[1])
+                    event.channel.sendMessage("Successfully enabled the command `" + args[1] + "`!").queue()
+                    sendDisabledCommands(cmd, event)
+                    return
+                }
+                FileUtils.disableCommand(event.guild.id, args[1])
+                event.channel.sendMessage("Successfully disabled the command `" + args[1] + "`!").queue()
+                sendDisabledCommands(cmd, event)
+                return
+            }
             "delete-commands" -> {
                 if (args.size < 2) {
-                    val embedManagerCMDDeletion =
-                        EmbedManager("UniG0 Command Deletion", Color.ORANGE, cmd, event.author)
-                    embedManagerCMDDeletion.embedBuilder.addField(
-                        "Commands that auto-delete:", """
-     ${FileUtils.getDeletedCommands(event.guild.id).putBetween("\n")}
-     
-     """.trimIndent(), false
-                    )
-                    event.channel.sendMessage(embedManagerCMDDeletion.embedBuilder.build()).queue()
+                    sendAutoDeleteCmds(cmd, event)
                     return
                 }
                 if (FileUtils.getDeletedCommands(event.guild.id).contains(args[1])) {
@@ -119,8 +122,8 @@ You can also use ${jda.selfUser.asMention} as the prefix!""", false
                 if (args.size >= 2) {
                     return
                 }
-                val embedManagerWelcomer = EmbedManager("UniG0 Welcomer", Color.BLUE, cmd, event.author)
-                embedManagerWelcomer.embedBuilder.addField(
+                val embedManager = EmbedManager("UniG0 Welcomer", Color.BLUE, cmd, event.author)
+                embedManager.embedBuilder.addField(
                     "Enabled:",
                     """
                                         ```
@@ -128,7 +131,7 @@ You can also use ${jda.selfUser.asMention} as the prefix!""", false
                                         DM Message: ${FileUtils.isWelcomeDMEnabled(event.guild.id)}```
                                         """.trimIndent(), false
                 )
-                embedManagerWelcomer.embedBuilder.addField(
+                embedManager.embedBuilder.addField(
                     "Messages:",
                     """
                                         ```
@@ -137,46 +140,34 @@ You can also use ${jda.selfUser.asMention} as the prefix!""", false
                                         """.trimIndent(), false
                 )
                 if (FileUtils.getWelcomeChannel(event.guild.id).getChannel(jda) == null) {
-                    embedManagerWelcomer.embedBuilder.addField(
+                    embedManager.embedBuilder.addField(
                         "Channels:",
                         "Public Message: NONE", false
                     )
                 } else {
-                    embedManagerWelcomer.embedBuilder.addField(
+                    embedManager.embedBuilder.addField(
                         "Channels:",
                         "Public Message: " + (FileUtils.getWelcomeChannel(event.guild.id).getChannel(jda)?.asMention
                             ?: "None"),
                         false
                     )
                 }
-                event.channel.sendMessage(embedManagerWelcomer.embedBuilder.build()).queue()
+                event.channel.sendMessage(embedManager.embedBuilder.build()).queue()
                 return
             }
         }
-    }
-
-    private fun collectionNewLineChannels(collection: Collection<String>): String {
-        val finished = StringBuilder()
-        for (c in collection) {
-            val s = c.getChannel(jda)?.asMention
-            finished.append("\n").append(s)
-        }
-        return finished.toString()
     }
 
     private fun sendAutoDeleteCmds(
         cmd: String,
         event: GuildMessageReceivedEvent
     ) {
-        val embedManagerCMDDeletion =
+        val embedManager =
             EmbedManager("UniG0 Command Deletion", Color.ORANGE, cmd, event.author)
-        embedManagerCMDDeletion.embedBuilder.addField(
-            "Commands that auto-delete:", """
-     ```${FileUtils.getDeletedCommands(event.guild.id).putBetween("\n")}
-     ```
-     """.trimIndent(), false
+        embedManager.embedBuilder.addField(
+            FileUtils.getDeletedCommands(event.guild.id).getEmbedField("Commands that auto delete:")
         )
-        event.channel.sendMessage(embedManagerCMDDeletion.embedBuilder.build()).queue()
+        event.channel.sendMessage(embedManager.embedBuilder.build()).queue()
     }
 
 
@@ -184,13 +175,21 @@ You can also use ${jda.selfUser.asMention} as the prefix!""", false
         cmd: String,
         event: GuildMessageReceivedEvent
     ) {
-        val embedManagerPrefix = EmbedManager("UniG0 Disabled Channels", Color.ORANGE, cmd, event.author)
-        embedManagerPrefix.embedBuilder.addField(
-            "Channels that are ignored:", """
-     ${collectionNewLineChannels(FileUtils.getDisabledChannels(event.guild.id))}
-     
-     """.trimIndent(), false
+        val embedManager = EmbedManager("UniG0 Disabled Channels", Color.ORANGE, cmd, event.author)
+        embedManager.embedBuilder.addField(
+            FileUtils.getDisabledChannels(event.guild.id).getEmbedField("Channels that are disabled:")
         )
-        event.channel.sendMessage(embedManagerPrefix.embedBuilder.build()).queue()
+        event.channel.sendMessage(embedManager.embedBuilder.build()).queue()
+    }
+
+    private fun sendDisabledCommands(
+        cmd: String,
+        event: GuildMessageReceivedEvent
+    ) {
+        val embedManager = EmbedManager("UniG0 Disabled Commands", Color.ORANGE, cmd, event.author)
+        embedManager.embedBuilder.addField(
+            FileUtils.getDisabledCommands(event.guild.id).getEmbedField("Commands that are disabled:")
+        )
+        event.channel.sendMessage(embedManager.embedBuilder.build()).queue()
     }
 }

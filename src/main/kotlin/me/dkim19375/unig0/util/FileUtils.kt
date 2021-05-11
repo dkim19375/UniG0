@@ -1,6 +1,7 @@
 package me.dkim19375.unig0.util
 
 import me.dkim19375.unig0.UniG0
+import me.dkim19375.unig0.util.function.getIgnoreCase
 import me.dkim19375.unig0.util.property.GlobalProperties
 import me.dkim19375.unig0.util.property.ServerProperties
 import java.util.*
@@ -53,11 +54,12 @@ object FileUtils {
     val token: String
         get() = UniG0.fileManager.globalConfig.get(GlobalProperties.token)
 
+    fun getDisabledCommands(id: String): Set<String> = UniG0.fileManager.getServerConfig(id).get(ServerProperties.disabled_commands).toSet()
+
     fun getDeletedCommands(id: String): Set<String> {
-        val before: Set<String> =
-            HashSet(UniG0.fileManager.getServerConfig(id).get(ServerProperties.delete_commands))
+        val before = UniG0.fileManager.getServerConfig(id).get(ServerProperties.delete_commands).toSet()
         if (before.contains("*")) {
-            val set: MutableSet<String> = HashSet()
+            val set = mutableSetOf<String>()
             set.add("*")
             return set
         }
@@ -74,16 +76,31 @@ object FileUtils {
     }
 
     fun removeDeletedCommand(id: String, command: String) {
-        val set: MutableSet<String> = HashSet(getDeletedCommands(id))
+        val set = getDeletedCommands(id).toMutableSet()
         set.remove(command)
         UniG0.fileManager.getServerConfig(id).set(ServerProperties.delete_commands, set)
         save()
     }
 
     fun addDeletedCommand(id: String, command: String) {
-        val set: MutableSet<String> = HashSet(getDeletedCommands(id))
+        val set = getDeletedCommands(id).toMutableSet()
         set.add(command)
         UniG0.fileManager.getServerConfig(id).set(ServerProperties.delete_commands, set)
+        save()
+    }
+
+    fun enableCommand(id: String, command: String) {
+        val set = getDisabledCommands(id).toMutableSet()
+        set.remove(set.getIgnoreCase(command) ?: "")
+        UniG0.fileManager.getServerConfig(id).set(ServerProperties.disabled_commands, set)
+        save()
+    }
+
+    fun disableCommand(id: String, command: String) {
+        val set = getDisabledCommands(id).toMutableSet()
+        set.remove(set.getIgnoreCase(command) ?: "")
+        set.add(command)
+        UniG0.fileManager.getServerConfig(id).set(ServerProperties.disabled_commands, set)
         save()
     }
 
@@ -101,14 +118,14 @@ object FileUtils {
     }
 
     fun removeDisabledChannel(id: String, channelID: String) {
-        val set: MutableSet<String> = HashSet(getDisabledChannels(id))
+        val set = getDisabledChannels(id).toMutableSet()
         set.remove(channelID)
         UniG0.fileManager.getServerConfig(id).set(ServerProperties.disabled_channels, set)
         save()
     }
 
     fun addDisabledChannel(id: String, channelID: String) {
-        val set: MutableSet<String> = HashSet(getDisabledChannels(id))
+        val set = getDisabledChannels(id).toMutableSet()
         set.add(channelID)
         UniG0.fileManager.getServerConfig(id).set(ServerProperties.disabled_channels, set)
         save()

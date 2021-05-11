@@ -1,6 +1,6 @@
 package me.dkim19375.unig0.event
 
-import me.dkim19375.dkim19375jdautils.holders.MessageRecievedHolder
+import me.dkim19375.dkim19375jdautils.holders.MessageReceivedHolder
 import me.dkim19375.unig0.UniG0
 import me.dkim19375.unig0.util.Command
 import me.dkim19375.unig0.util.FileUtils
@@ -15,7 +15,7 @@ import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 
 class EventListener(private val main: UniG0) : ListenerAdapter() {
-    private fun getMessage(message: String, serverId: String?): MessageRecievedHolder? {
+    private fun getMessage(message: String, serverId: String?): MessageReceivedHolder? {
         if (serverId == null) {
             if (!message.startsWith(main.jda.selfUser.asMention.replaceFirst("@".toRegex(), "@!"))) {
                 return null
@@ -51,7 +51,7 @@ class EventListener(private val main: UniG0) : ListenerAdapter() {
             first = false
         }
         val args = argsList.toTypedArray()
-        return MessageRecievedHolder(command, args, prefix, message)
+        return MessageReceivedHolder(command, args, prefix, message)
     }
 
     override fun onMessageReceived(event: MessageReceivedEvent) {
@@ -80,7 +80,6 @@ class EventListener(private val main: UniG0) : ListenerAdapter() {
                     return@sendEvent
                 }
                 try {
-                    println("sent command - ${c.command}")
                     c.onCommand(msg.command, msg.args.toList(), msg.prefix, msg.all, event)
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -107,7 +106,6 @@ class EventListener(private val main: UniG0) : ListenerAdapter() {
                     return@sendEvent
                 }
                 try {
-                    println("sent guild command - ${c.command}")
                     c.onGuildCommand(msg.command, msg.args.toList(), msg.prefix, msg.all, event)
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -167,6 +165,9 @@ class EventListener(private val main: UniG0) : ListenerAdapter() {
         if (!cmd.equals(command.command, ignoreCase = true)) {
             return false
         }
+        if (guild != null && FileUtils.getDisabledCommands(guild.id).containsIgnoreCase(cmd)) {
+            return false
+        }
         if (user.isBot) {
             return false
         }
@@ -184,18 +185,19 @@ class EventListener(private val main: UniG0) : ListenerAdapter() {
             } else if (member.hasPermission(command.permissions)) {
                 return@let
             }
-            channel.sendMessage(
-                "You do not have permission! (Required permission${if (command.permissions.size <= 1) "" else "s"}: ${
-                    command.permissions.joinToString(
-                        ", ", transform = Permission::getName
-                    )
-                })"
-            ).queue()
+            if (event !is MessageReceivedEvent) {
+                channel.sendMessage(
+                    "You do not have permission! (Required permission${if (command.permissions.size <= 1) "" else "s"}: ${
+                        command.permissions.joinToString(
+                            ", ", transform = Permission::getName
+                        )
+                    })"
+                ).queue()
+            }
             return false
         }
         if (args.size < command.minArgs) {
             when (event) {
-                is MessageReceivedEvent -> command.sendHelpUsage(cmd, event)
                 is PrivateMessageReceivedEvent -> command.sendHelpUsage(cmd, event)
                 is GuildMessageReceivedEvent -> command.sendHelpUsage(cmd, event)
             }

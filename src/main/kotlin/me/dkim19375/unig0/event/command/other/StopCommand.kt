@@ -24,6 +24,7 @@ class StopCommand(private val main: UniG0) : Command(main.jda) {
             return
         }
         event.channel.sendMessage("Stopping bot...").queue({
+            main.stopped = true
             main.jda.shutdown()
             exitProcess(0)
         }
