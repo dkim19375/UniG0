@@ -36,6 +36,7 @@ dependencies {
     implementation 'com.github.dkim19375:dkim19375JDAUtils:2.0.4'
     implementation 'com.google.code.gson:gson:2.8.6'
 }
+
 task copyFileToTest(type: Copy) {
     new File('/test/' + project.name + '-' + project.version + '-all.jar').delete()
     from('build/libs/' + project.name + '-' + project.version + '-all.jar')

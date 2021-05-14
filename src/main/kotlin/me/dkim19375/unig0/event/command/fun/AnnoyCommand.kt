@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.entities.TextChannel
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
+import java.util.*
 
 class AnnoyCommand(main: UniG0) : Command(main) {
     override val command = "annoy"
@@ -20,6 +21,7 @@ class AnnoyCommand(main: UniG0) : Command(main) {
     override val minArgs = 1
     override val permissions = setOf(Permission.MESSAGE_MANAGE)
     private val jda = main.jda
+    private val uses = mutableMapOf<Long, Long>()
 
     override fun onGuildCommand(
         cmd: String,
@@ -37,28 +39,38 @@ class AnnoyCommand(main: UniG0) : Command(main) {
         }
         val userCached = event.guild.getMemberById(userId)
         if (userCached != null) {
-            annoy(event.guild, member, userCached)
+            annoy(event.channel, event.guild, member, userCached)
             return
         }
         event.guild.retrieveMemberById(userId, false).queue { retrievedUser ->
             if (retrievedUser != null) {
-                annoy(event.guild, member, retrievedUser)
+                annoy(event.channel, event.guild, member, retrievedUser)
                 return@queue
             }
             event.channel.sendMessage("Invalid ID or mention!").queue()
         }
     }
 
-    private fun annoy(guild: Guild, from: Member, to: Member) {
+    private fun annoy(channel: TextChannel, guild: Guild, from: Member, to: Member) {
+        val lastUse = uses[from.idLong]
+        if (lastUse != null) {
+            val current = System.currentTimeMillis()
+            if (current - lastUse <= 1000) {
+                channel.sendMessage("Cooldown: Wait ${current - lastUse}ms").queue()
+                return
+            }
+            uses.remove(from.idLong)
+        }
+        uses[from.idLong] = System.currentTimeMillis()
         val channels = guild.textChannels.toSet()
         val talkChannels = mutableSetOf<TextChannel>()
-        for (channel in channels) {
-            if (channel.canTalk(from) && channel.canTalk(to)) {
-                talkChannels.add(channel)
+        for (sendChannel in channels) {
+            if (sendChannel.canTalk(from) && sendChannel.canTalk(to)) {
+                talkChannels.add(sendChannel)
             }
         }
-        for (channel in talkChannels) {
-            channel.sendMessage(to.user.asMention).queue { message ->
+        for (sendChannel in talkChannels) {
+            sendChannel.sendMessage(to.user.asMention).queue { message ->
                 message.delete().queue()
             }
         }

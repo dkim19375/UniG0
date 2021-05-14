@@ -14,6 +14,7 @@ import me.dkim19375.unig0.event.command.utilities.CustomEmbedCommands
 import me.dkim19375.unig0.util.FileManager
 import me.dkim19375.unig0.util.FileUtils
 import me.dkim19375.unig0.util.property.GlobalProperties
+import net.dv8tion.jda.api.entities.Activity
 
 fun main() {
     val fileManager = FileManager()
@@ -21,6 +22,7 @@ fun main() {
     bot.onStart()
     bot.registerCommands()
     bot.consoleCommands["message"] = bot::messageCommand
+    bot.jda.presence.activity = Activity.watching("dkim19375 code")
 }
 
 class UniG0(val fileManager: FileManager) : BotBase(
