@@ -1,20 +1,20 @@
 package me.dkim19375.unig0.event.command.other
 
-import me.dkim19375.dkim19375jdautils.embeds.EmbedManager
+import me.dkim19375.dkim19375jdautils.command.Command
+import me.dkim19375.dkim19375jdautils.command.CommandArg
+import me.dkim19375.dkim19375jdautils.embed.EmbedManager
 import me.dkim19375.unig0.UniG0
-import me.dkim19375.unig0.util.Command
-import me.dkim19375.unig0.util.CommandArg
-import me.dkim19375.unig0.util.CommandType
+import me.dkim19375.unig0.event.command.CommandTypes
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
 import java.awt.Color
 
-class PingCommand(private val main: UniG0) : Command(main.jda) {
+class PingCommand(private val main: UniG0) : Command(main) {
     override val command = "ping"
     override val name = "Ping"
     override val aliases = setOf<String>()
     override val description = "See the bot's latency"
     override val arguments = setOf<CommandArg>()
-    override val type = CommandType.OTHER
+    override val type = CommandTypes.OTHER
     override val minArgs = 0
     private val jda = main.jda
 

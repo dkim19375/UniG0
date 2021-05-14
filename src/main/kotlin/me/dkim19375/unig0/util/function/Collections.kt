@@ -1,10 +1,8 @@
 package me.dkim19375.unig0.util.function
 
-import me.dkim19375.dkim19375jdautils.embeds.EmbedUtils
-import me.dkim19375.dkim19375jdautils.impl.EntryImpl
-import me.dkim19375.unig0.util.Command
-import me.dkim19375.unig0.util.CommandArg
-import me.dkim19375.unig0.util.CommandType
+import me.dkim19375.dkim19375jdautils.command.Command
+import me.dkim19375.dkim19375jdautils.command.CommandArg
+import me.dkim19375.dkim19375jdautils.embed.EmbedUtils
 import net.dv8tion.jda.api.entities.MessageEmbed
 import java.util.*
 
@@ -19,16 +17,6 @@ fun Collection<String>.containsIgnoreCase(other: String): Boolean {
 
 fun List<String>.getRestArgs(drop: Int): String {
     return drop(drop).joinToString(" ", transform = String::trim)
-}
-
-fun Set<Command>.getOfType(type: CommandType): Set<Command> {
-    val ofType = mutableSetOf<Command>()
-    for (cmd in this) {
-        if (cmd.type == type) {
-            ofType.add(cmd)
-        }
-    }
-    return ofType
 }
 
 fun Set<CommandArg>.combinedArgs(): Set<String> {
@@ -58,17 +46,5 @@ fun Collection<String>?.getEmbedField(
 ): MessageEmbed.Field = if (isNullOrEmpty()) {
     MessageEmbed.Field(name, noValue, inline)
 } else {
-    EmbedUtils.getEmbedGroup(EntryImpl(name, toMutableList()))
-}
-
-fun Iterable<String>.containsIgnoreCase(find: String): Boolean = getIgnoreCase(find) != null
-
-fun Iterable<String>.getIgnoreCase(find: String): String? = firstOrNull { it.equals(find, ignoreCase = true) }
-
-fun Set<Command>.getCommandByName(name: String): Command? {
-    return firstOrNull { cmd ->
-        cmd.name.equals(name, ignoreCase = true)
-                || cmd.command.equals(name, ignoreCase = true)
-                || cmd.aliases.containsIgnoreCase(name)
-    }
+    EmbedUtils.getEmbedGroup(name, toList())
 }

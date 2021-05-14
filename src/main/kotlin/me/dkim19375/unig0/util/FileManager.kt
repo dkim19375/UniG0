@@ -4,7 +4,6 @@ import me.dkim19375.unig0.util.property.GlobalProperties
 import me.dkim19375.unig0.util.property.ServerProperties
 import me.mattstudios.config.SettingsManager
 import java.nio.file.Paths
-import java.util.*
 
 class FileManager {
     var globalConfig: SettingsManager

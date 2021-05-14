@@ -1,22 +1,22 @@
 package me.dkim19375.unig0.event.command.`fun`
 
+import me.dkim19375.dkim19375jdautils.command.Command
+import me.dkim19375.dkim19375jdautils.command.CommandArg
 import me.dkim19375.unig0.UniG0
-import me.dkim19375.unig0.util.Command
-import me.dkim19375.unig0.util.CommandArg
-import me.dkim19375.unig0.util.CommandType
+import me.dkim19375.unig0.event.command.CommandTypes
 import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.entities.TextChannel
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
 
-class AnnoyCommand(main: UniG0) : Command(main.jda) {
+class AnnoyCommand(main: UniG0) : Command(main) {
     override val command = "annoy"
     override val name = "Annoy"
     override val aliases = setOf<String>()
     override val description = "Annoy someone by pinging them in all channels!"
     override val arguments = setOf(CommandArg(this, "<user>", "The user to annoy"))
-    override val type = CommandType.FUN
+    override val type = CommandTypes.FUN
     override val minArgs = 1
     override val permissions = setOf(Permission.MESSAGE_MANAGE)
     private val jda = main.jda

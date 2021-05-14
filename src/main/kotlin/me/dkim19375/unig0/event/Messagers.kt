@@ -12,25 +12,25 @@ class Messagers(private val main: UniG0) : ListenerAdapter() {
     private val jda = main.jda
 
     override fun onGuildMemberJoin(event: GuildMemberJoinEvent) {
-        if (FileUtils.isWelcomeDMEnabled(event.guild.id)) {
+        if (FileUtils.isWelcomeDMEnabled(event.guild.id, main)) {
             welcomeDM(event)
         }
-        if (FileUtils.isWelcomeMessageEnabled(event.guild.id)) {
+        if (FileUtils.isWelcomeMessageEnabled(event.guild.id, main)) {
             welcomeMessage(event)
         }
     }
 
     private fun welcomeDM(event: GuildMemberJoinEvent) {
-        val message = parsePlaceholders(FileUtils.getDMMessage(event.guild.id), event)
+        val message = parsePlaceholders(FileUtils.getDMMessage(event.guild.id, main), event)
         event.user.openPrivateChannel().queue { channel: PrivateChannel -> channel.sendMessage(message).queue() }
     }
 
     private fun welcomeMessage(event: GuildMemberJoinEvent) {
-        if (getChannel(FileUtils.getWelcomeChannel(event.guild.id)) == null) {
+        if (getChannel(FileUtils.getWelcomeChannel(event.guild.id, main)) == null) {
             return
         }
-        val textChannel = getChannel(FileUtils.getWelcomeChannel(event.guild.id))?: return
-        textChannel.sendMessage(FileUtils.getWelcomeMessage(event.guild.id)).queue()
+        val textChannel = getChannel(FileUtils.getWelcomeChannel(event.guild.id, main))?: return
+        textChannel.sendMessage(FileUtils.getWelcomeMessage(event.guild.id, main)).queue()
     }
 
     private fun getChannel(ids: String): TextChannel? {

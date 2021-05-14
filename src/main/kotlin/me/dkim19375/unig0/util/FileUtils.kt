@@ -1,31 +1,31 @@
 package me.dkim19375.unig0.util
 
+import me.dkim19375.dkim19375jdautils.util.getIgnoreCase
 import me.dkim19375.unig0.UniG0
-import me.dkim19375.unig0.util.function.getIgnoreCase
 import me.dkim19375.unig0.util.property.GlobalProperties
 import me.dkim19375.unig0.util.property.ServerProperties
-import java.util.*
 
+@Suppress("unused")
 object FileUtils {
-    fun reload() {
-        UniG0.fileManager.globalConfig.reload()
-        val map = UniG0.fileManager.getServerConfigs()
+    fun reload(bot: UniG0) {
+        bot.fileManager.globalConfig.reload()
+        val map = bot.fileManager.getServerConfigs()
         for (manager in map.values) {
             manager.reload()
         }
     }
 
     @Suppress("MemberVisibilityCanBePrivate")
-    fun save() {
-        UniG0.fileManager.globalConfig.save()
-        val map = UniG0.fileManager.getServerConfigs()
+    fun save(bot: UniG0) {
+        bot.fileManager.globalConfig.save()
+        val map = bot.fileManager.getServerConfigs()
         for (manager in map.values) {
             manager.save()
         }
     }
 
-    fun reset() {
-        val map = UniG0.fileManager.getServerConfigs()
+    fun reset(bot: UniG0) {
+        val map = bot.fileManager.getServerConfigs()
         for (manager in map.values) {
             manager.set(ServerProperties.prefix, "?")
             manager.set(ServerProperties.delete_commands, emptySet())
@@ -39,25 +39,24 @@ object FileUtils {
             manager.set(ServerProperties.welcomer_enabled_dm, true)
             manager.set(ServerProperties.welcomer_enabled_message, true)
         }
-        save()
+        save(bot)
     }
 
-    fun getPrefix(id: String): String {
-        return UniG0.fileManager.getServerConfig(id).get(ServerProperties.prefix)
+    fun getPrefix(id: String, bot: UniG0): String {
+        return bot.fileManager.getServerConfig(id).get(ServerProperties.prefix)
     }
 
-    fun setPrefix(id: String, prefix: String) {
-        UniG0.fileManager.getServerConfig(id).set(ServerProperties.prefix, prefix)
-        save()
+    fun setPrefix(id: String, prefix: String, bot: UniG0) {
+        bot.fileManager.getServerConfig(id).set(ServerProperties.prefix, prefix)
+        save(bot)
     }
 
-    val token: String
-        get() = UniG0.fileManager.globalConfig.get(GlobalProperties.token)
+    fun getToken(bot: UniG0): String = bot.fileManager.globalConfig.get(GlobalProperties.token)
 
-    fun getDisabledCommands(id: String): Set<String> = UniG0.fileManager.getServerConfig(id).get(ServerProperties.disabled_commands).toSet()
+    fun getDisabledCommands(id: String, bot: UniG0): Set<String> = bot.fileManager.getServerConfig(id).get(ServerProperties.disabled_commands).toSet()
 
-    fun getDeletedCommands(id: String): Set<String> {
-        val before = UniG0.fileManager.getServerConfig(id).get(ServerProperties.delete_commands).toSet()
+    fun getDeletedCommands(id: String, bot: UniG0): Set<String> {
+        val before = bot.fileManager.getServerConfig(id).get(ServerProperties.delete_commands).toSet()
         if (before.contains("*")) {
             val set = mutableSetOf<String>()
             set.add("*")
@@ -66,113 +65,113 @@ object FileUtils {
         return before
     }
 
-    fun shouldDeleteCommand(id: String, command: String): Boolean {
-        return UniG0.fileManager.getServerConfig(id).get(ServerProperties.delete_commands).contains(command)
+    fun shouldDeleteCommand(id: String, command: String, bot: UniG0): Boolean {
+        return bot.fileManager.getServerConfig(id).get(ServerProperties.delete_commands).contains(command)
     }
 
-    fun setDeletedCommands(id: String, commands: Set<String>) {
-        UniG0.fileManager.getServerConfig(id).set(ServerProperties.delete_commands, commands)
-        save()
+    fun setDeletedCommands(id: String, commands: Set<String>, bot: UniG0) {
+        bot.fileManager.getServerConfig(id).set(ServerProperties.delete_commands, commands)
+        save(bot)
     }
 
-    fun removeDeletedCommand(id: String, command: String) {
-        val set = getDeletedCommands(id).toMutableSet()
+    fun removeDeletedCommand(id: String, command: String, bot: UniG0) {
+        val set = getDeletedCommands(id, bot).toMutableSet()
         set.remove(command)
-        UniG0.fileManager.getServerConfig(id).set(ServerProperties.delete_commands, set)
-        save()
+        bot.fileManager.getServerConfig(id).set(ServerProperties.delete_commands, set)
+        save(bot)
     }
 
-    fun addDeletedCommand(id: String, command: String) {
-        val set = getDeletedCommands(id).toMutableSet()
+    fun addDeletedCommand(id: String, command: String, bot: UniG0) {
+        val set = getDeletedCommands(id, bot).toMutableSet()
         set.add(command)
-        UniG0.fileManager.getServerConfig(id).set(ServerProperties.delete_commands, set)
-        save()
+        bot.fileManager.getServerConfig(id).set(ServerProperties.delete_commands, set)
+        save(bot)
     }
 
-    fun enableCommand(id: String, command: String) {
-        val set = getDisabledCommands(id).toMutableSet()
+    fun enableCommand(id: String, command: String, bot: UniG0) {
+        val set = getDisabledCommands(id, bot).toMutableSet()
         set.remove(set.getIgnoreCase(command) ?: "")
-        UniG0.fileManager.getServerConfig(id).set(ServerProperties.disabled_commands, set)
-        save()
+        bot.fileManager.getServerConfig(id).set(ServerProperties.disabled_commands, set)
+        save(bot)
     }
 
-    fun disableCommand(id: String, command: String) {
-        val set = getDisabledCommands(id).toMutableSet()
+    fun disableCommand(id: String, command: String, bot: UniG0) {
+        val set = getDisabledCommands(id, bot).toMutableSet()
         set.remove(set.getIgnoreCase(command) ?: "")
         set.add(command)
-        UniG0.fileManager.getServerConfig(id).set(ServerProperties.disabled_commands, set)
-        save()
+        bot.fileManager.getServerConfig(id).set(ServerProperties.disabled_commands, set)
+        save(bot)
     }
 
-    fun getDisabledChannels(id: String): Set<String> {
-        return UniG0.fileManager.getServerConfig(id).get(ServerProperties.disabled_channels)
+    fun getDisabledChannels(id: String, bot: UniG0): Set<String> {
+        return bot.fileManager.getServerConfig(id).get(ServerProperties.disabled_channels)
     }
 
-    fun shouldDisableChannel(id: String, channelID: String): Boolean {
-        return UniG0.fileManager.getServerConfig(id).get(ServerProperties.disabled_channels).contains(channelID)
+    fun shouldDisableChannel(id: String, channelID: String, bot: UniG0): Boolean {
+        return bot.fileManager.getServerConfig(id).get(ServerProperties.disabled_channels).contains(channelID)
     }
 
-    fun setDisabledChannels(id: String, channelID: Set<String>) {
-        UniG0.fileManager.getServerConfig(id).set(ServerProperties.disabled_channels, channelID)
-        save()
+    fun setDisabledChannels(id: String, channelID: Set<String>, bot: UniG0) {
+        bot.fileManager.getServerConfig(id).set(ServerProperties.disabled_channels, channelID)
+        save(bot)
     }
 
-    fun removeDisabledChannel(id: String, channelID: String) {
-        val set = getDisabledChannels(id).toMutableSet()
+    fun removeDisabledChannel(id: String, channelID: String, bot: UniG0) {
+        val set = getDisabledChannels(id, bot).toMutableSet()
         set.remove(channelID)
-        UniG0.fileManager.getServerConfig(id).set(ServerProperties.disabled_channels, set)
-        save()
+        bot.fileManager.getServerConfig(id).set(ServerProperties.disabled_channels, set)
+        save(bot)
     }
 
-    fun addDisabledChannel(id: String, channelID: String) {
-        val set = getDisabledChannels(id).toMutableSet()
+    fun addDisabledChannel(id: String, channelID: String, bot: UniG0) {
+        val set = getDisabledChannels(id, bot).toMutableSet()
         set.add(channelID)
-        UniG0.fileManager.getServerConfig(id).set(ServerProperties.disabled_channels, set)
-        save()
+        bot.fileManager.getServerConfig(id).set(ServerProperties.disabled_channels, set)
+        save(bot)
     }
 
-    fun isWelcomeMessageEnabled(id: String): Boolean {
-        return UniG0.fileManager.getServerConfig(id).get(ServerProperties.welcomer_enabled_message)
+    fun isWelcomeMessageEnabled(id: String, bot: UniG0): Boolean {
+        return bot.fileManager.getServerConfig(id).get(ServerProperties.welcomer_enabled_message)
     }
 
-    fun setWelcomeMessageEnabled(id: String, enabled: Boolean) {
-        UniG0.fileManager.getServerConfig(id).set(ServerProperties.welcomer_enabled_message, enabled)
-        save()
+    fun setWelcomeMessageEnabled(id: String, enabled: Boolean, bot: UniG0) {
+        bot.fileManager.getServerConfig(id).set(ServerProperties.welcomer_enabled_message, enabled)
+        save(bot)
     }
 
-    fun isWelcomeDMEnabled(id: String): Boolean {
-        return UniG0.fileManager.getServerConfig(id).get(ServerProperties.welcomer_enabled_dm)
+    fun isWelcomeDMEnabled(id: String, bot: UniG0): Boolean {
+        return bot.fileManager.getServerConfig(id).get(ServerProperties.welcomer_enabled_dm)
     }
 
-    fun setWelcomeDMEnabled(id: String, enabled: Boolean) {
-        UniG0.fileManager.getServerConfig(id).set(ServerProperties.welcomer_enabled_dm, enabled)
-        save()
+    fun setWelcomeDMEnabled(id: String, enabled: Boolean, bot: UniG0) {
+        bot.fileManager.getServerConfig(id).set(ServerProperties.welcomer_enabled_dm, enabled)
+        save(bot)
     }
 
-    fun getWelcomeMessage(id: String): String {
-        return UniG0.fileManager.getServerConfig(id).get(ServerProperties.welcomer_message)
+    fun getWelcomeMessage(id: String, bot: UniG0): String {
+        return bot.fileManager.getServerConfig(id).get(ServerProperties.welcomer_message)
     }
 
-    fun setWelcomeMessage(id: String, message: String) {
-        UniG0.fileManager.getServerConfig(id).set(ServerProperties.welcomer_message, message)
-        save()
+    fun setWelcomeMessage(id: String, message: String, bot: UniG0) {
+        bot.fileManager.getServerConfig(id).set(ServerProperties.welcomer_message, message)
+        save(bot)
     }
 
-    fun getDMMessage(id: String): String {
-        return UniG0.fileManager.getServerConfig(id).get(ServerProperties.welcomer_dm)
+    fun getDMMessage(id: String, bot: UniG0): String {
+        return bot.fileManager.getServerConfig(id).get(ServerProperties.welcomer_dm)
     }
 
-    fun setDMMessage(id: String, message: String) {
-        UniG0.fileManager.getServerConfig(id).set(ServerProperties.welcomer_dm, message)
-        save()
+    fun setDMMessage(id: String, message: String, bot: UniG0) {
+        bot.fileManager.getServerConfig(id).set(ServerProperties.welcomer_dm, message)
+        save(bot)
     }
 
-    fun getWelcomeChannel(id: String): String {
-        return UniG0.fileManager.getServerConfig(id).get(ServerProperties.welcomer_channel)
+    fun getWelcomeChannel(id: String, bot: UniG0): String {
+        return bot.fileManager.getServerConfig(id).get(ServerProperties.welcomer_channel)
     }
 
-    fun setWelcomeChannel(id: String, channelId: String) {
-        UniG0.fileManager.getServerConfig(id).set(ServerProperties.welcomer_channel, channelId)
-        save()
+    fun setWelcomeChannel(id: String, channelId: String, bot: UniG0) {
+        bot.fileManager.getServerConfig(id).set(ServerProperties.welcomer_channel, channelId)
+        save(bot)
     }
 }

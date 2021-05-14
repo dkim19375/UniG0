@@ -1,84 +1,34 @@
 package me.dkim19375.unig0
 
-import me.dkim19375.unig0.event.EventListener
+import me.dkim19375.dkim19375jdautils.BotBase
+import me.dkim19375.dkim19375jdautils.command.HelpCommand
+import me.dkim19375.dkim19375jdautils.event.CustomListener
+import me.dkim19375.unig0.event.command.CommandTypes
+import me.dkim19375.unig0.event.command.CustomVerifier
 import me.dkim19375.unig0.event.command.`fun`.AnnoyCommand
-import me.dkim19375.unig0.event.command.other.HelpCommand
 import me.dkim19375.unig0.event.command.other.OptionsCommand
 import me.dkim19375.unig0.event.command.other.PingCommand
 import me.dkim19375.unig0.event.command.other.StopCommand
 import me.dkim19375.unig0.event.command.utilities.AnnounceCommand
 import me.dkim19375.unig0.event.command.utilities.CustomEmbedCommands
-import me.dkim19375.unig0.util.Command
 import me.dkim19375.unig0.util.FileManager
 import me.dkim19375.unig0.util.FileUtils
-import net.dv8tion.jda.api.JDA
-import net.dv8tion.jda.api.JDABuilder
-import net.dv8tion.jda.api.entities.Activity
-import java.util.*
-import kotlin.concurrent.thread
-import kotlin.system.exitProcess
+import me.dkim19375.unig0.util.property.GlobalProperties
 
-object UniG0 {
-    lateinit var fileManager: FileManager
-        private set
-    lateinit var jda: JDA
-    lateinit var commands: Set<Command>
-    var restart = false
-    var stopped = false
+fun main() {
+    val fileManager = FileManager()
+    val bot = UniG0(fileManager)
+    bot.onStart()
+    bot.registerCommands()
+    bot.consoleCommands["message"] = bot::messageCommand
+}
 
-    @JvmStatic
-    fun main(args: Array<String>) {
-        fileManager = FileManager()
-        startBot()
-    }
-
-    private fun startBot() {
-        if (this::jda.isInitialized) {
-            println("Stopping the bot!")
-            jda.shutdown()
-            println("Stopped")
-            restart = true
-        }
-        println("Starting bot")
-        val builder = JDABuilder.createDefault(FileUtils.token)
-        val jda = builder.build()
-        this.jda = jda
-        jda.presence.activity = Activity.watching("dkim19375 code")
-        registerCommands()
-        if (restart) {
-            return
-        }
-        try {
-            Runtime.getRuntime().addShutdownHook(thread(false) {
-                if (!stopped) {
-                    println("Stopping the bot!")
-                    jda.shutdown()
-                    println("Stopped")
-                    stopped = true
-                }
-            })
-        } catch (e: IllegalStateException) {
-            e.printStackTrace()
-        }
-        thread {
-            val scanner = Scanner(System.`in`)
-            while (scanner.hasNext()) {
-                val next = scanner.nextLine()
-                if (next.equals("stop", ignoreCase = true)) {
-                    println("Stopping the bot!")
-                    jda.shutdown()
-                    println("Stopped")
-                    stopped = true
-                    exitProcess(0)
-                }
-                if (next.startsWith("message", ignoreCase = true)) {
-                    messageCommand(next)
-                }
-            }
-        }
-    }
-
-    private fun messageCommand(next: String) {
+class UniG0(val fileManager: FileManager) : BotBase(
+    "UniG0",
+    fileManager.globalConfig.get(GlobalProperties.token)
+) {
+    override val customListener: CustomListener = CustomVerifier(this)
+    fun messageCommand(next: String) {
         val args = next.split(" ").drop(1)
         if (args.size < 2) {
             println("Too little args! Usage: message <channel> <message>")
@@ -98,7 +48,7 @@ object UniG0 {
             channel.sendMessage(message).queue()
             return
         }
-        jda.openPrivateChannelById(channelId).queue ({ channel ->
+        jda.openPrivateChannelById(channelId).queue({ channel ->
             channel.sendMessage(message).queue()
         }, { error ->
             throw error
@@ -106,18 +56,24 @@ object UniG0 {
         println("Invalid channel!")
     }
 
-    private fun registerCommands() {
-        commands = setOf(
-            HelpCommand(this),
-            PingCommand(this),
-            AnnounceCommand(this),
-            CustomEmbedCommands(this),
-            OptionsCommand(this),
-            StopCommand(this),
-            AnnoyCommand(this)
+    fun registerCommands() {
+        commandTypes.clear()
+        commandTypes.addAll(CommandTypes.values())
+        commands.clear()
+        commands.addAll(
+            listOf(
+                HelpCommand(this),
+                PingCommand(this),
+                AnnounceCommand(this),
+                CustomEmbedCommands(this),
+                OptionsCommand(this),
+                StopCommand(this),
+                AnnoyCommand(this)
+            )
         )
-        jda.addEventListener(EventListener(this))
     }
 
-    fun sendEvent(event: (Command) -> Unit) = commands.forEach(event)
+    override fun getPrefix(guild: String): String {
+        return FileUtils.getPrefix(guild, this)
+    }
 }

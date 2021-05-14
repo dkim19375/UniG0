@@ -1,13 +1,13 @@
 package me.dkim19375.unig0.event.command.utilities
 
+import me.dkim19375.dkim19375jdautils.command.Command
+import me.dkim19375.dkim19375jdautils.command.CommandArg
 import me.dkim19375.unig0.UniG0
-import me.dkim19375.unig0.util.Command
-import me.dkim19375.unig0.util.CommandArg
-import me.dkim19375.unig0.util.CommandType
+import me.dkim19375.unig0.event.command.CommandTypes
 import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
 
-class CustomEmbedCommands(private val main: UniG0) : Command(main.jda) {
+class CustomEmbedCommands(private val main: UniG0) : Command(main) {
     override val command = "embed"
     override val name = "Embed Editor"
     override val aliases = setOf<String>()
@@ -28,7 +28,7 @@ class CustomEmbedCommands(private val main: UniG0) : Command(main.jda) {
         CommandArg(this, "import <json>", "Edit the title in the embed"),
         CommandArg(this, "export", "Edit the title in the embed"),
     )
-    override val type = CommandType.UTILITIES
+    override val type = CommandTypes.UTILITIES
     override val minArgs = 1
     override val permissions = setOf(Permission.MESSAGE_MANAGE)
     private val jda = main.jda

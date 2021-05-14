@@ -1,10 +1,10 @@
 package me.dkim19375.unig0.event.command.utilities
 
-import me.dkim19375.dkim19375jdautils.embeds.EmbedManager
+import me.dkim19375.dkim19375jdautils.command.Command
+import me.dkim19375.dkim19375jdautils.command.CommandArg
+import me.dkim19375.dkim19375jdautils.embed.EmbedManager
 import me.dkim19375.unig0.UniG0
-import me.dkim19375.unig0.util.Command
-import me.dkim19375.unig0.util.CommandArg
-import me.dkim19375.unig0.util.CommandType
+import me.dkim19375.unig0.event.command.CommandTypes
 import me.dkim19375.unig0.util.function.getChannel
 import me.dkim19375.unig0.util.function.getRestArgs
 import net.dv8tion.jda.api.Permission
@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
 import java.awt.Color
 
-class AnnounceCommand(private val main: UniG0) : Command(main.jda) {
+class AnnounceCommand(private val main: UniG0) : Command(main) {
     override val command = "announce"
     override val name = "Announcements"
     override val aliases = setOf<String>()
@@ -20,7 +20,7 @@ class AnnounceCommand(private val main: UniG0) : Command(main.jda) {
     override val arguments = setOf(
         CommandArg(this, "<channel> <message>", "The message to announce")
     )
-    override val type = CommandType.UTILITIES
+    override val type = CommandTypes.UTILITIES
     override val minArgs = 2
     override val permissions = setOf(Permission.MESSAGE_MANAGE)
     private val jda = main.jda
