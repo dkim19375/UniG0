@@ -15,6 +15,7 @@ group 'me.dkim19375'
 version '1.0-SNAPSHOT'
 
 compileKotlin {
+    //noinspection GrUnresolvedAccess
     kotlinOptions {
         jvmTarget = "11"
     }
@@ -33,7 +34,7 @@ repositories {
 dependencies {
     implementation 'net.dv8tion:JDA:4.2.1_262'
     implementation 'me.mattstudios:triumph-config:1.0.5-SNAPSHOT'
-    implementation 'com.github.dkim19375:dkim19375JDAUtils:2.0.4'
+    implementation 'com.github.dkim19375:dkim19375JDAUtils:2.2.9'
     implementation 'com.google.code.gson:gson:2.8.6'
 }
 

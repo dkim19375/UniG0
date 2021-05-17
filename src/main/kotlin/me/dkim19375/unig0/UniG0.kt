@@ -9,27 +9,32 @@ import me.dkim19375.unig0.event.command.`fun`.AnnoyCommand
 import me.dkim19375.unig0.event.command.other.OptionsCommand
 import me.dkim19375.unig0.event.command.other.PingCommand
 import me.dkim19375.unig0.event.command.other.StopCommand
+import me.dkim19375.unig0.event.command.other.TestCommand
 import me.dkim19375.unig0.event.command.utilities.AnnounceCommand
 import me.dkim19375.unig0.event.command.utilities.CustomEmbedCommands
+import me.dkim19375.unig0.event.user.PrivateMessageAlerter
 import me.dkim19375.unig0.util.FileManager
 import me.dkim19375.unig0.util.FileUtils
 import me.dkim19375.unig0.util.property.GlobalProperties
 import net.dv8tion.jda.api.entities.Activity
+import net.dv8tion.jda.api.requests.GatewayIntent
 
 fun main() {
     val fileManager = FileManager()
     val bot = UniG0(fileManager)
+    bot.intents.add(GatewayIntent.GUILD_MEMBERS)
     bot.onStart()
     bot.registerCommands()
     bot.consoleCommands["message"] = bot::messageCommand
     bot.jda.presence.activity = Activity.watching("dkim19375 code")
+    bot.jda.awaitReady()
 }
 
-class UniG0(val fileManager: FileManager) : BotBase(
-    "UniG0",
-    fileManager.globalConfig.get(GlobalProperties.token)
-) {
+class UniG0(val fileManager: FileManager) : BotBase() {
     override val customListener: CustomListener = CustomVerifier(this)
+    override val name = "UniG0"
+    override val token = fileManager.globalConfig.get(GlobalProperties.token)
+
     fun messageCommand(next: String) {
         val args = next.split(" ").drop(1)
         if (args.size < 2) {
@@ -44,18 +49,17 @@ class UniG0(val fileManager: FileManager) : BotBase(
         }
         jda.getTextChannelById(channelId)?.let { channel ->
             channel.sendMessage(message).queue()
-            return
+            return@messageCommand
         }
         jda.getPrivateChannelById(channelId)?.let { channel ->
             channel.sendMessage(message).queue()
-            return
+            return@messageCommand
         }
         jda.openPrivateChannelById(channelId).queue({ channel ->
             channel.sendMessage(message).queue()
         }, { error ->
             throw error
         })
-        println("Invalid channel!")
     }
 
     fun registerCommands() {
@@ -70,8 +74,12 @@ class UniG0(val fileManager: FileManager) : BotBase(
                 CustomEmbedCommands(this),
                 OptionsCommand(this),
                 StopCommand(this),
-                AnnoyCommand(this)
+                AnnoyCommand(this),
+                TestCommand(this)
             )
+        )
+        jda.addEventListener(
+            PrivateMessageAlerter(this)
         )
     }
 
