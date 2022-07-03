@@ -32,7 +32,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'net.dv8tion:JDA:4.2.1_262'
+    implementation 'net.dv8tion:JDA:4.4.0_352'
     implementation 'me.mattstudios:triumph-config:1.0.5-SNAPSHOT'
     implementation 'com.github.dkim19375:dkim19375JDAUtils:2.5.0'
     implementation 'com.google.code.gson:gson:2.9.0'
